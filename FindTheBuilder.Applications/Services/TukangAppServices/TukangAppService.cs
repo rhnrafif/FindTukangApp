@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using FindTheBuilder.Applications.Services.CustomerAppServices.DTO;
+using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using FindTheBuilder.Databases;
 using FindTheBuilder.Databases.Models;
 using System;
@@ -8,29 +8,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FindTheBuilder.Applications.Services.CustomerAppServices
+namespace FindTheBuilder.Applications.Services.TukangAppServices
 {
-	public class CustomerAppService : ICustomerAppService
+	public class TukangAppService : ITukangAppService
 	{
 		private readonly AppDbContext _context;
 		private readonly IMapper _mapper;
-		public CustomerAppService(AppDbContext context, IMapper mapper)
+		public TukangAppService(AppDbContext context, IMapper mapper)
 		{
 			_context= context;
 			_mapper= mapper;
 		}
-		public Customers Create(CustomerDTO model)
+		public Tukang Create(TukangDTO model)
 		{
-			var customer = _mapper.Map<Customers>(model);
-			_context.Customers.Add(customer);
+			var tukang = _mapper.Map<Tukang>(model);
+			_context.Tukang.Add(tukang);
 			_context.SaveChanges();
+
+			return tukang;
 		}
 
-		public Customers Update(UpdateCustomerDTO model)
+		public Tukang Update(UpdateTukangDTO model)
 		{
-			var customer = _mapper.Map<Customers>(model);
-			_context.Customers.Update(customer);
+			var tukang = _mapper.Map<Tukang>(model);
+			_context.Tukang.Update(tukang);
 			_context.SaveChanges();
+
+			return tukang;
 		}
 	}
 }

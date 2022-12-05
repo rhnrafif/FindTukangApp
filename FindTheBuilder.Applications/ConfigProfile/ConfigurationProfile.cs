@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FindTheBuilder.Applications.Services.CustomerAppServices.DTO;
+using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using FindTheBuilder.Databases.Models;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,11 @@ namespace FindTheBuilder.Applications.ConfigProfile
 			CreateMap<UpdateCustomerDTO, Customers>();
 
 			// Tukang
+			CreateMap<Tukang, TukangDTO>();
+			CreateMap<TukangDTO, Tukang>();
+			
+			CreateMap<Tukang, UpdateTukangDTO>();
+			CreateMap<UpdateTukangDTO, Tukang>();
 		}
 	}
 }

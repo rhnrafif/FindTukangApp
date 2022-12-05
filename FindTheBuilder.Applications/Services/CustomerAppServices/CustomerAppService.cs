@@ -24,6 +24,8 @@ namespace FindTheBuilder.Applications.Services.CustomerAppServices
 			var customer = _mapper.Map<Customers>(model);
 			_context.Customers.Add(customer);
 			_context.SaveChanges();
+
+			return customer;
 		}
 
 		public Customers Update(UpdateCustomerDTO model)
@@ -31,6 +33,8 @@ namespace FindTheBuilder.Applications.Services.CustomerAppServices
 			var customer = _mapper.Map<Customers>(model);
 			_context.Customers.Update(customer);
 			_context.SaveChanges();
+
+			return customer;
 		}
 	}
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FindTheBuilder.Applications.Services.CustomerAppServices.DTO
+namespace FindTheBuilder.Applications.Services.TukangAppServices.DTO
 {
-	public class CustomerDTO
+	public class TukangDTO
 	{
 		public string Name { get; set; }
 		public string Phone { get; set; }

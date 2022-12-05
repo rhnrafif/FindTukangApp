@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using FindTheBuilder.Applications.Services.CustomerAppServices.DTO;
+using FindTheBuilder.Applications.Services.PriceAppServices.DTO;
 using FindTheBuilder.Applications.Services.ProductAppServices.DTO;
 using FindTheBuilder.Applications.Services.SkillAppServices.DTO;
+using FindTheBuilder.Applications.Services.TransactionAppServices.DTO;
 using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using FindTheBuilder.Databases.Models;
 using System;
@@ -44,6 +46,20 @@ namespace FindTheBuilder.Applications.ConfigProfile
 
 			CreateMap<UpdateSkillDTO, Skills>();
 			CreateMap<Skills, UpdateSkillDTO>();
+
+			// Price
+			CreateMap<Prices, PriceDTO>();
+			CreateMap<PriceDTO, Prices>();
+
+			CreateMap<Prices, UpdatePriceDTO>();
+			CreateMap<UpdatePriceDTO, Prices>();
+
+			// Transaction
+			CreateMap<Transactions, TransactionDTO>();
+			CreateMap<TransactionDTO, Transactions>();
+
+			CreateMap<Transactions, UpdateTransactionDTO>();
+			CreateMap<UpdateTransactionDTO, Transactions>();
 		}
 	}
 }

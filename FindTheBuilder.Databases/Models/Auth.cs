@@ -8,16 +8,14 @@ using System.Threading.Tasks;
 
 namespace FindTheBuilder.Databases.Models
 {
-	[Table("tukang")]
-	public class Tukang
+	[Table("auth")]
+	public class Auth
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public int SkillId { get; set; }
-
-		public virtual Skills Skill { get; set; }
-		public virtual IEnumerable<Prices> Prices { get; set; }
+		public string Password { get; set; }
+		public int Role { get; set; }
 	}
 }

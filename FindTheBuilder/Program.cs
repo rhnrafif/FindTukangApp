@@ -1,4 +1,8 @@
 using FindTheBuilder.Applications.ConfigProfile;
+<<<<<<< HEAD
+=======
+using FindTheBuilder.Applications.Services.AuthAppServices;
+>>>>>>> Rafif
 using FindTheBuilder.Databases;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +17,14 @@ var config = new AutoMapper.MapperConfiguration(cfg =>
 	cfg.AddProfile(new ConfigurationProfile());
 });
 
+<<<<<<< HEAD
+=======
+var mapper = config.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
+>>>>>>> Rafif
 // Add services to the container.
+builder.Services.AddTransient<IAuthAppService, AuthAppService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
-<<<<<<< HEAD
+
 using FindTheBuilder.Applications.Services.CustomerAppServices.DTO;
 using FindTheBuilder.Applications.Services.PriceAppServices.DTO;
 using FindTheBuilder.Applications.Services.ProductAppServices.DTO;
 using FindTheBuilder.Applications.Services.SkillAppServices.DTO;
 using FindTheBuilder.Applications.Services.TransactionAppServices.DTO;
 using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
-=======
 using FindTheBuilder.Applications.Services.AuthAppServices.Dto;
-//using FindTheBuilder.Applications.Services.CustomerAppServices.DTO;
->>>>>>> Rafif
 using FindTheBuilder.Databases.Models;
 using System;
 using System.Collections.Generic;
@@ -25,17 +22,11 @@ namespace FindTheBuilder.Applications.ConfigProfile
 		public ConfigurationProfile()
 		{
 			// Customers
-			//CreateMap<Customers, CustomerDTO>();
-			//CreateMap<CustomerDTO ,Customers>();
+			CreateMap<Customers, CustomerDTO>();
+			CreateMap<CustomerDTO, Customers>();
 
-			//CreateMap<Customers, UpdateCustomerDTO>();
-			//CreateMap<UpdateCustomerDTO, Customers>();
 
-			// Tukang
-<<<<<<< HEAD
-			CreateMap<Tukang, TukangDTO>();
-			CreateMap<TukangDTO, Tukang>();
-			
+			// Tukang			
 			CreateMap<Tukang, UpdateTukangDTO>();
 			CreateMap<UpdateTukangDTO, Tukang>();
 
@@ -66,12 +57,11 @@ namespace FindTheBuilder.Applications.ConfigProfile
 
 			CreateMap<Transactions, UpdateTransactionDTO>();
 			CreateMap<UpdateTransactionDTO, Transactions>();
-=======
 
 			//Auth
 			CreateMap<Auth, AuthDto>();
 			CreateMap<AuthDto, Auth>();
->>>>>>> Rafif
+
 		}
 	}
 }

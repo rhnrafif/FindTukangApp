@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FindTheBuilder.Applications.Services.TukangAppServices.DTO
+namespace FindTheBuilder.Applications.Services.SkillAppServices.DTO
 {
-	public class TukangDTO
+	public class UpdateSkillDTO
 	{
+		public int Id { get; set; }
 		public string Name { get; set; }
-		public int SkillId { get; set; }
+		public int ProductId { get; set; }
 	}
 }

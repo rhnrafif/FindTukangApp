@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using FindTheBuilder.Applications.Services.CustomerAppServices.DTO;
+using FindTheBuilder.Applications.Services.AuthAppServices.Dto;
+//using FindTheBuilder.Applications.Services.CustomerAppServices.DTO;
 using FindTheBuilder.Databases.Models;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,17 @@ namespace FindTheBuilder.Applications.ConfigProfile
 		public ConfigurationProfile()
 		{
 			// Customers
-			CreateMap<Customers, CustomerDTO>();
-			CreateMap<CustomerDTO ,Customers>();
+			//CreateMap<Customers, CustomerDTO>();
+			//CreateMap<CustomerDTO ,Customers>();
 
-			CreateMap<Customers, UpdateCustomerDTO>();
-			CreateMap<UpdateCustomerDTO, Customers>();
+			//CreateMap<Customers, UpdateCustomerDTO>();
+			//CreateMap<UpdateCustomerDTO, Customers>();
 
 			// Tukang
+
+			//Auth
+			CreateMap<Auth, AuthDto>();
+			CreateMap<AuthDto, Auth>();
 		}
 	}
 }

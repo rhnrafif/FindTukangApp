@@ -1,5 +1,7 @@
 ﻿using FindTheBuilder.Applications.Services.AuthAppServices;
 using FindTheBuilder.Applications.Services.AuthAppServices.Dto;
+using FindTheBuilder.Applications.Services.TukangAppServices;
+using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +19,12 @@ namespace FindTheBuilder.Controllers
 	{
 		private IAuthAppService _authAppService;
 		private IConfiguration _configuration;
-		public AuthController(IAuthAppService authAppService, IConfiguration configuration)
+		private ITukangAppService _tukangAppService;
+		public AuthController(IAuthAppService authAppService, IConfiguration configuration, ITukangAppService tukangAppService)
 		{
 			_authAppService = authAppService;
 			_configuration = configuration;
+			_tukangAppService = tukangAppService;
 		}
 
 		[HttpGet("login")]
@@ -93,19 +97,26 @@ namespace FindTheBuilder.Controllers
 			}
 		}
 
-		[HttpGet("trial")]
+		[HttpPost]
 		[Authorize(Roles = "Tukang")]
-		public IActionResult Trial(string model)
+		public IActionResult Create([FromBody] TukangDTO model)
 		{
-			IActionResult response = null;
-			var result = _authAppService.Trial(model);
-
-			if(result != null)
+			try
 			{
-				response = Ok(new { res = "Oke" });
+				var result = _tukangAppService.Create(model);
+				if(result != null)
+				{
+					return Ok( new { Status = result.Prices});
+				}
+
+				return null;
 			}
-			return response;
+			catch
+			{
+				return null;
+			}
 		}
+
 
 		private string GenerateJSONWebToken(AuthDto model, string role)
 		{
@@ -115,8 +126,9 @@ namespace FindTheBuilder.Controllers
 			var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
 						_configuration["Jwt:Audience"],
 						claims: new[]
-						{							
-							new Claim(ClaimTypes.Role, role)
+						{
+							new Claim(ClaimTypes.Role, role),
+							new Claim(ClaimTypes.NameIdentifier, model.Name)
 						},
 						expires: DateTime.Now.AddMinutes(1200),
 						signingCredentials: credentials

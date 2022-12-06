@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-using FindTheBuilder.Applications.Services.CustomerAppServices.DTO;
+//using FindTheBuilder.Applications.Services.CustomerAppServices.DTO;
 using FindTheBuilder.Applications.Services.PriceAppServices.DTO;
 using FindTheBuilder.Applications.Services.ProductAppServices.DTO;
 using FindTheBuilder.Applications.Services.SkillAppServices.DTO;
@@ -22,8 +22,8 @@ namespace FindTheBuilder.Applications.ConfigProfile
 		public ConfigurationProfile()
 		{
 			// Customers
-			CreateMap<Customers, CustomerDTO>();
-			CreateMap<CustomerDTO, Customers>();
+			//CreateMap<Customers, CustomerDTO>();
+			//CreateMap<CustomerDTO, Customers>();
 
 
 			// Tukang			

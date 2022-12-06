@@ -1,4 +1,5 @@
-﻿using FindTheBuilder.Applications.Services.AuthAppServices;
+﻿using FindTheBuilder.Applications.Helper;
+using FindTheBuilder.Applications.Services.AuthAppServices;
 using FindTheBuilder.Applications.Services.AuthAppServices.Dto;
 using FindTheBuilder.Applications.Services.TukangAppServices;
 using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -29,7 +31,7 @@ namespace FindTheBuilder.Controllers
 
 		[HttpGet("login")]
 		[AllowAnonymous]
-		public IActionResult Login([FromQuery] AuthDto model)
+		public IActionResult Login([FromQuery] AuthLoginDto model)
 		{
 			IActionResult response = Unauthorized();
 			try
@@ -41,24 +43,26 @@ namespace FindTheBuilder.Controllers
 				{
 					string role = null;
 
-					if (model.Role == 1)
+					if (userData.Role == 1)
 					{
 						role = "Tukang";
 					}
-					else if (model.Role == 2)
+					else if (userData.Role == 2)
 					{
 						role = "Customer";
 					}
 
-					var jwt = GenerateJSONWebToken(model, role);
-					response = Ok(new { token = jwt });
+					var jwt = GenerateJSONWebToken(userData, role);
+					//response = Ok(new { token = jwt });
+
+					return Requests.Response(this, new ApiStatus(200), Ok(new { token = jwt }), "Success");
 				}
 
-				return response;
+				return Requests.Response(this, new ApiStatus(404), null, "User Not Found");
 			}
-			catch
+			catch (DbException de)
 			{
-				return response;
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
 			}
 		}
 
@@ -68,8 +72,7 @@ namespace FindTheBuilder.Controllers
 		{
 			IActionResult response = Unauthorized();
 			try
-			{
-				
+			{				
 				var userData = _authAppService.Register(model);
 
 				if(userData != null)
@@ -86,36 +89,17 @@ namespace FindTheBuilder.Controllers
 					}
 
 					var jwt = GenerateJSONWebToken(userData, role);
-					response = Ok(new { token = jwt });
+					return Requests.Response(this, new ApiStatus(200), Ok(new { token = jwt }), "Success");
 				}
 
-				return response;
+				return Requests.Response(this, new ApiStatus(400), null, "Input Error");
 			}
-			catch
+			catch  (DbException de)
 			{
-				return response;
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
 			}
 		}
 
-		[HttpPost]
-		[Authorize(Roles = "Tukang")]
-		public IActionResult Create([FromBody] TukangDTO model)
-		{
-			try
-			{
-				var result = _tukangAppService.Create(model);
-				if(result != null)
-				{
-					return Ok( new { Status = result.Prices});
-				}
-
-				return null;
-			}
-			catch
-			{
-				return null;
-			}
-		}
 
 
 		private string GenerateJSONWebToken(AuthDto model, string role)

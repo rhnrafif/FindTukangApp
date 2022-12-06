@@ -43,22 +43,27 @@ namespace FindTheBuilder.Applications.Services.AuthAppServices
 				}
 				else
 				{
-					return null;
+					return result = null;
 				}				
 			}
 			catch
 			{				
 				_context.Database.RollbackTransaction();
-				return null;
+				return new AuthDto() { Name = null, Password = null, Role = 0};
 			}
 		}
 
-		public AuthDto Login(AuthDto model)
+		public AuthDto Login(AuthLoginDto model)
 		{
 			try
 			{
 				var result = new AuthDto();
 				var user = _context.auths.FirstOrDefault(w => w.Name == model.Name);
+
+				if(user == null)
+				{
+					return result = null;
+				}			
 
 				//DeCrypt
 				bool isValidPassword = BCrypt.Net.BCrypt.Verify(model.Password, user.Password);
@@ -68,11 +73,11 @@ namespace FindTheBuilder.Applications.Services.AuthAppServices
 					return result = _mapper.Map<AuthDto>(user);
 				}
 
-				return null;
+				return result = null;
 			}
 			catch
 			{
-				return null;
+				return new AuthDto() { Name = null, Password = null, Role = 0 };
 			}
 		}
 
@@ -80,7 +85,7 @@ namespace FindTheBuilder.Applications.Services.AuthAppServices
 		{
 			AuthDto user = null;
 
-			if (model.Name.Count() != 0)
+			if (model != null)
 			{
 				user = new AuthDto { Name = model.Name, Password = model.Password, Role = model.Role };
 			}
@@ -88,13 +93,5 @@ namespace FindTheBuilder.Applications.Services.AuthAppServices
 			return user;
 		}
 
-		public string Trial(string model)
-		{
-			if(model != null)
-			{
-				return "Succes";
-			}
-			return null;
-		}
 	}
 }

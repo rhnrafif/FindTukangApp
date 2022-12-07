@@ -10,6 +10,7 @@ using FindTheBuilder.Applications.Services.TransactionDetailAppServices.DTO;
 using FindTheBuilder.Databases.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Common;
 
 namespace FindTheBuilder.Controllers
 {
@@ -35,37 +36,86 @@ namespace FindTheBuilder.Controllers
 
 		// Customer
 		[HttpPost("CreateCustomer")]
-		[Authorize(Roles = "Customer")]
-		public Customers CreateCustomer([FromBody] CustomerDTO model)
+		//[Authorize(Roles = "Customer")]
+		public IActionResult CreateCustomer([FromBody] CustomerDTO model)
 		{
-			return _customerAppService.Create(model);
+			try
+			{
+				if(model.Name != null)
+				{
+					_customerAppService.Create(model);
+					return Requests.Response(this, new ApiStatus(200), null, "Success");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch(DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
+			
 		}
 		
 		[HttpPatch("UpdateCustomer")]
-		[Authorize(Roles = "Customer")]
-		public Customers UpdateCustomer([FromBody] UpdateCustomerDTO model)
+		//[Authorize(Roles = "Customer")]
+		public IActionResult UpdateCustomer([FromBody] UpdateCustomerDTO model)
 		{
-			return _customerAppService.Update(model);
+			try
+			{
+				if (model.Name != null)
+				{
+					_customerAppService.Update(model);
+					return Requests.Response(this, new ApiStatus(200), null, "Success");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
 		}
 
 		// Transaction
 		[HttpPost("CreateTransaction")]
-		[Authorize(Roles = "Customer")]
-		public Transactions CreateTransaction([FromBody] TransactionDTO model)
+		//[Authorize(Roles = "Customer")]
+		public IActionResult CreateTransaction([FromBody] TransactionDTO model)
 		{
-			return _transactionAppService.Create(model);
+			try
+			{
+				if (model != null)
+				{
+					_transactionAppService.Create(model);
+					return Requests.Response(this, new ApiStatus(200), null, "Success");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
 		}
 
 		[HttpPatch("UpdateTransaction")]
-		[Authorize(Roles = "Customer")]
-		public Transactions UpdateTransaction([FromBody] UpdateTransactionDTO model)
+		//[Authorize(Roles = "Customer")]
+		public IActionResult UpdateTransaction([FromBody] UpdateTransactionDTO model)
 		{
-			return _transactionAppService.Update(model);
+			try
+			{
+				if (model != null)
+				{
+					_transactionAppService.Update(model);
+					return Requests.Response(this, new ApiStatus(200), null, "Success");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
 		}
 
 		// Transaction Detail
 		[HttpGet("GetAllTransaction")]
-		[Authorize(Roles = "Customer")]
+		//Authorize(Roles = "Customer")]
 		public PagedResult<TransactionDetailDTO> GetAllTransaction([FromQuery] PageInfo pageInfo)
 		{
 			return _transactionDetailAppService.GetAllTransactions(pageInfo);

@@ -25,6 +25,9 @@ namespace FindTheBuilder.Applications.ConfigProfile
 			CreateMap<Customers, CustomerDTO>();
 			CreateMap<CustomerDTO, Customers>();
 
+			CreateMap<Customers, UpdateCustomerDTO>();
+			CreateMap<UpdateCustomerDTO, Customers>();
+
 
 			// Tukang			
 			CreateMap<Tukang, UpdateTukangDTO>();

@@ -25,7 +25,7 @@ namespace FindTheBuilder.Applications.Services.AuthAppServices
 		{
 			try
 			{
-				var result = new AuthDto();
+				var result = new AuthDto();				
 
 				//Hashing
 				model.Password = BCrypt.Net.BCrypt.HashPassword(model.Password);
@@ -41,10 +41,9 @@ namespace FindTheBuilder.Applications.Services.AuthAppServices
 				{
 					return result = _mapper.Map<AuthDto>(userData);
 				}
-				else
-				{
-					return result = null;
-				}				
+				
+				return result;
+								
 			}
 			catch
 			{				
@@ -62,7 +61,7 @@ namespace FindTheBuilder.Applications.Services.AuthAppServices
 
 				if(user == null)
 				{
-					return result = null;
+					return result;
 				}			
 
 				//DeCrypt
@@ -73,7 +72,7 @@ namespace FindTheBuilder.Applications.Services.AuthAppServices
 					return result = _mapper.Map<AuthDto>(user);
 				}
 
-				return result = null;
+				return result;
 			}
 			catch
 			{

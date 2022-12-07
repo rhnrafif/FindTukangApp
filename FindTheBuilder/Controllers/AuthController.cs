@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
@@ -33,13 +34,11 @@ namespace FindTheBuilder.Controllers
 		[AllowAnonymous]
 		public IActionResult Login([FromQuery] AuthLoginDto model)
 		{
-			IActionResult response = Unauthorized();
 			try
-			{
-				
+			{				
 				var user = _authAppService.Login(model);
 				var userData = _authAppService.AutenticateUser(user);
-				if(userData != null)
+				if(userData.Name != null)
 				{
 					string role = null;
 
@@ -70,14 +69,25 @@ namespace FindTheBuilder.Controllers
 		[AllowAnonymous]
 		public IActionResult Register([FromBody] AuthDto model)
 		{
-			IActionResult response = Unauthorized();
 			try
-			{				
-				var userData = _authAppService.Register(model);
+			{
+				var userData = new AuthDto();
+				switch (model.Role)
+				{
+					case 1:
+						userData = _authAppService.Register(model);
+						break;
+					case 2:
+						userData = _authAppService.Register(model);
+						break;
+					default:
+						return Requests.Response(this, new ApiStatus(400), null, "Input Not Valid");
+						break;
+				}
 
 				if(userData != null)
 				{
-					string role = null;
+					string role = null;					
 
 					if(model.Role == 1)
 					{
@@ -111,12 +121,12 @@ namespace FindTheBuilder.Controllers
 						_configuration["Jwt:Audience"],
 						claims: new[]
 						{
-							new Claim(ClaimTypes.Role, role),
-							new Claim(ClaimTypes.NameIdentifier, model.Name)
+							new Claim(ClaimTypes.Role, role)
 						},
 						expires: DateTime.Now.AddMinutes(1200),
 						signingCredentials: credentials
 						) ;
+			
 			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 

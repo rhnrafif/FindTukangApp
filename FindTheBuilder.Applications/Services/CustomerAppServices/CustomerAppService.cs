@@ -2,6 +2,7 @@
 using FindTheBuilder.Applications.Services.CustomerAppServices.DTO;
 using FindTheBuilder.Databases;
 using FindTheBuilder.Databases.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,13 +29,31 @@ namespace FindTheBuilder.Applications.Services.CustomerAppServices
 			return customer;
 		}
 
+		public Customers GetByName(string name)
+		{
+			var customer = new Customers();
+			var cust = _context.Customers.AsNoTracking().FirstOrDefault(w => w.Name == name);
+			if(cust == null)
+			{
+				return customer;
+			}
+			return customer = cust;
+		}
+
 		public Customers Update(UpdateCustomerDTO model)
 		{
-			var customer = _mapper.Map<Customers>(model);
-			_context.Customers.Update(customer);
-			_context.SaveChanges();
+			var cust = GetByName(model.Name);
 
-			return customer;
+			if(cust.Id != 0)
+			{
+				var customer = _mapper.Map<Customers>(model);
+				customer.Id = cust.Id;
+				_context.Customers.Update(customer);
+				_context.SaveChanges();
+
+				return customer;
+			}
+			return new Customers() { Name = null };
 		}
 	}
 }

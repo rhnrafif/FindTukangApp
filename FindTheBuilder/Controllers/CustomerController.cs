@@ -8,12 +8,14 @@ using FindTheBuilder.Applications.Services.TransactionAppServices.DTO;
 using FindTheBuilder.Applications.Services.TransactionDetailAppServices;
 using FindTheBuilder.Applications.Services.TransactionDetailAppServices.DTO;
 using FindTheBuilder.Databases.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FindTheBuilder.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize(Roles ="Customer")]
 	public class CustomerController : ControllerBase
 	{
 		private readonly ICustomerAppService _customerAppService;

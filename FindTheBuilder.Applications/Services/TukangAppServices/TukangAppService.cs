@@ -30,11 +30,30 @@ namespace FindTheBuilder.Applications.Services.TukangAppServices
 
 		public Tukang Update(UpdateTukangDTO model)
 		{
-			var tukang = _mapper.Map<Tukang>(model);
-			_context.Tukang.Update(tukang);
-			_context.SaveChanges();
+			var getTukang = GetByName(model.Name);
 
-			return tukang;
+			if (getTukang.Id != 0) 
+			{
+				var tukang = _mapper.Map<Tukang>(model);
+				getTukang.Id = tukang.Id;
+				_context.Tukang.Update(tukang);
+				_context.SaveChanges();
+
+				return tukang;
+			}
+			
+			return new Tukang() { Name = null };
+		}
+
+		private Tukang GetByName (string name)
+		{
+			var tukang = new Tukang();
+			var getTukang = _context.Tukang.FirstOrDefault(x => x.Name == name);
+			if (getTukang == null)
+			{
+				return tukang;
+			}
+			return tukang = getTukang;
 		}
 	}
 }

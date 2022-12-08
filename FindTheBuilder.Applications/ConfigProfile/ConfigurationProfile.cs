@@ -30,6 +30,9 @@ namespace FindTheBuilder.Applications.ConfigProfile
 
 
 			// Tukang			
+			CreateMap<TukangDTO, Tukang>();
+			CreateMap<Tukang, TukangDTO>();
+			
 			CreateMap<Tukang, UpdateTukangDTO>();
 			CreateMap<UpdateTukangDTO, Tukang>();
 

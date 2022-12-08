@@ -8,6 +8,7 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices.DTO
 {
 	public class TransactionDTO
 	{
-
+		public string CustomerName { get; set; }
+		public int PriceId { get; set; }
 	}
 }

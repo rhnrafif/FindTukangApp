@@ -10,6 +10,7 @@ using FindTheBuilder.Applications.Services.TransactionDetailAppServices.DTO;
 using FindTheBuilder.Databases.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Common;
 
 namespace FindTheBuilder.Controllers
 {
@@ -36,42 +37,133 @@ namespace FindTheBuilder.Controllers
 
 		// Customer
 		[HttpPost("CreateCustomer")]
-		public Customers CreateCustomer([FromBody] CustomerDTO model)
+		//[Authorize(Roles = "Customer")]
+		public IActionResult CreateCustomer([FromBody] CustomerDTO model)
 		{
-			return _customerAppService.Create(model);
+			try
+			{
+				if(model.Name != null)
+				{
+					_customerAppService.Create(model);
+					return Requests.Response(this, new ApiStatus(200), null, "Success");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch(DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
+			
 		}
 		
 		[HttpPatch("UpdateCustomer")]
-		public Customers UpdateCustomer([FromBody] UpdateCustomerDTO model)
+		//[Authorize(Roles = "Customer")]
+		public IActionResult UpdateCustomer([FromBody] UpdateCustomerDTO model)
 		{
-			return _customerAppService.Update(model);
+			try
+			{
+				if (model.Name != null)
+				{
+					var res = _customerAppService.Update(model);
+					if(res.Name != null)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(404), null, "Error");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
 		}
 
 		// Transaction
 		[HttpPost("CreateTransaction")]
-		public Transactions CreateTransaction([FromBody] TransactionDTO model)
+		//[Authorize(Roles = "Customer")]
+		public IActionResult CreateTransaction([FromBody] TransactionDTO model)
 		{
-			return _transactionAppService.Create(model);
+			try
+			{
+				if (model != null)
+				{
+					var res = _transactionAppService.Create(model);
+					if(res != null)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(400), null, "Error");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
 		}
 
 		[HttpPatch("UpdateTransaction")]
-		public Transactions UpdateTransaction([FromBody] UpdateTransactionDTO model)
+		//[Authorize(Roles = "Customer")]
+		public IActionResult UpdateTransaction([FromBody] UpdateTransactionDTO model)
 		{
-			return _transactionAppService.Update(model);
+			try
+			{
+				if (model != null)
+				{
+					var res = _transactionAppService.Update(model);
+					if (res != null)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(404), null, "Error");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
 		}
 
 		// Transaction Detail
-		[HttpGet("GetAllTransaction")]
-		public PagedResult<TransactionDetailDTO> GetAllTransaction([FromQuery] PageInfo pageInfo)
+		[HttpGet("GetAllTransactionDetails")]
+		//Authorize(Roles = "Customer")]
+		public IActionResult GetAllTransaction([FromQuery] PageInfo pageInfo)
 		{
-			return _transactionDetailAppService.GetAllTransactions(pageInfo);
+			try
+			{
+				var data = _transactionDetailAppService.GetAllTransactions(pageInfo);
+				if(data.Data.Count() == 0)
+				{
+					return Requests.Response(this, new ApiStatus(404), null, "No Transaction");
+				}
+				return Requests.Response(this, new ApiStatus(200), data, "Success");
+			}
+			catch(DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
 		}
 
 		// Prices
 		[HttpGet("GetAllPrice")]
-		public PagedResult<PriceListDTO> GetAllPrice([FromQuery] PageInfo pageInfo)
+		[AllowAnonymous]
+		public IActionResult GetAllPrice([FromQuery] PageInfo pageInfo)
 		{
-			return _priceAppService.GetPriceByProduct(pageInfo);
+			try
+			{
+				var data = _priceAppService.GetPriceByProduct(pageInfo);
+				if (data.Data.Count() == 0)
+				{
+					return Requests.Response(this, new ApiStatus(404), null, "No Price List");
+				}
+				return Requests.Response(this, new ApiStatus(200), data, "Success");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}			 
 		}
 	}
 }

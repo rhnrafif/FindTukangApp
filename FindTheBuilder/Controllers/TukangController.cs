@@ -15,7 +15,7 @@ namespace FindTheBuilder.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[Authorize(Roles ="Tukang")]
+	//[Authorize(Roles ="Tukang")]
 	public class TukangController : ControllerBase
 	{
 		private readonly ITukangAppService _tukangAppService;
@@ -37,12 +37,14 @@ namespace FindTheBuilder.Controllers
 		// Tukang
 
 		[HttpPost("CreateTukang")]
+		[Authorize(Roles = "Tukang")]
 		public Tukang CreateTukang([FromBody] TukangDTO model)		
 		{			
 			return _tukangAppService.Create(model);
 		}
 		
 		[HttpPatch("EditTukang")]
+		[Authorize(Roles = "Tukang")]
 		public Tukang EditTukang([FromBody] UpdateTukangDTO model)		
 		{			
 			return _tukangAppService.Update(model);
@@ -50,18 +52,21 @@ namespace FindTheBuilder.Controllers
 		
 		// Skill Tukang
 		[HttpPost("CreateSkill")]
+		[Authorize(Roles = "Tukang")]
 		public Skills CreateSkill([FromBody] SkillDTO model)		
 		{			
 			return _skillAppService.Create(model);
 		}
 		
 		[HttpPatch("EditSkill")]
+		[Authorize(Roles = "Tukang")]
 		public Skills EditSkill([FromBody] UpdateSkillDTO model)		
 		{			
 			return _skillAppService.Update(model);
 		}
 		
 		[HttpDelete("DeleteSkill")]
+		[Authorize(Roles = "Tukang")]
 		public Skills DeleteSkill(int id)		
 		{			
 			return _skillAppService.Delete(id);
@@ -69,18 +74,21 @@ namespace FindTheBuilder.Controllers
 		
 		// Product Tukang
 		[HttpPost("CreateProduct")]
+		[Authorize(Roles = "Tukang")]
 		public Products CreateProduct([FromBody] ProductDTO model)		
 		{			
 			return _productAppService.Create(model);
 		}
 		
 		[HttpPatch("EditProduct")]
+		[Authorize(Roles = "Tukang")]
 		public Products EditProduct([FromBody] UpdateProductDTO model)		
 		{			
 			return _productAppService.Update(model);
 		}
 		
 		[HttpDelete("DeleteProduct")]
+		[Authorize(Roles = "Tukang")]
 		public Products DeleteProduct(int id)		
 		{			
 			return _productAppService.Delete(id);
@@ -88,18 +96,21 @@ namespace FindTheBuilder.Controllers
 		
 		// Price Tukang
 		[HttpPost("CreatePrice")]
+		[Authorize(Roles = "Tukang")]
 		public Prices CreatePrice([FromBody] PriceDTO model)		
 		{			
 			return _priceAppService.Create(model);
 		}
 		
 		[HttpPatch("EditPrice")]
+		[Authorize(Roles = "Tukang")]
 		public Prices EditPrice([FromBody] UpdatePriceDTO model)		
 		{			
 			return _priceAppService.Update(model);
 		}
 		
 		[HttpDelete("DeletePrice")]
+		[Authorize(Roles = "Tukang")]
 		public Prices DeletePrice(int id)		
 		{			
 			return _priceAppService.Delete(id);

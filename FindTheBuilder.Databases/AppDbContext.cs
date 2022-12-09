@@ -19,6 +19,15 @@ namespace FindTheBuilder.Databases
 		public DbSet<Transactions> Transactions { get; set; }
 
 		public AppDbContext(DbContextOptions<AppDbContext>options):base(options) { }
+
+		protected override void OnModelCreating(ModelBuilder mod)
+		{
+			mod.Entity<Skills>().HasData(
+				new { Id = 1, Name = "House" },
+				new { Id = 2, Name = "Garden" },
+				new { Id = 3, Name = "Pool" }
+				);
+		}
 		
 	}
 }

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace FindTheBuilder.Databases.Migrations
 {
     /// <inheritdoc />
@@ -143,6 +145,16 @@ namespace FindTheBuilder.Databases.Migrations
                         principalTable: "transaction",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "skill",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "House" },
+                    { 2, "Garden" },
+                    { 3, "Pool" }
                 });
 
             migrationBuilder.CreateIndex(

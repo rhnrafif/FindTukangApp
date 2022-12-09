@@ -1,7 +1,5 @@
 ﻿using FindTheBuilder.Applications.Services.PriceAppServices;
 using FindTheBuilder.Applications.Services.PriceAppServices.DTO;
-using FindTheBuilder.Applications.Services.ProductAppServices;
-using FindTheBuilder.Applications.Services.ProductAppServices.DTO;
 using FindTheBuilder.Applications.Services.SkillAppServices;
 using FindTheBuilder.Applications.Services.SkillAppServices.DTO;
 using FindTheBuilder.Applications.Services.TukangAppServices;
@@ -20,17 +18,14 @@ namespace FindTheBuilder.Controllers
 	{
 		private readonly ITukangAppService _tukangAppService;
 		private readonly ISkillAppService _skillAppService;
-		private readonly IProductAppService _productAppService;
 		private readonly IPriceAppService _priceAppService;
 
 		public TukangController(ITukangAppService tukangAppService, 
 			ISkillAppService skillAppService, 
-			IProductAppService productAppService, 
 			IPriceAppService priceAppService)
 		{
 			_tukangAppService = tukangAppService;
 			_skillAppService = skillAppService;
-			_productAppService = productAppService;
 			_priceAppService = priceAppService;
 		}
 

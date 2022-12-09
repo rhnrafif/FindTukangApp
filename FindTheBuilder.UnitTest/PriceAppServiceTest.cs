@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FindTheBuilder.Applications.Services.ProductAppServices.DTO;
-using FindTheBuilder.Applications.Services.ProductAppServices;
 using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using FindTheBuilder.Applications.Services.TukangAppServices;
 

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FindTheBuilder.Databases.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221209043538_InitialCreate")]
+    [Migration("20221209060532_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -122,6 +122,23 @@ namespace FindTheBuilder.Databases.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("skill");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "House"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Garden"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Pool"
+                        });
                 });
 
             modelBuilder.Entity("FindTheBuilder.Databases.Models.TransactionDetails", b =>

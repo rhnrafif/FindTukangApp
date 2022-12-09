@@ -18,6 +18,7 @@ namespace FindTheBuilder.Databases
 		public DbSet<TransactionDetails> TransactionDetails { get; set; }
 		public DbSet<Transactions> Transactions { get; set; }
 
-		public AppDbContext(DbContextOptions<AppDbContext>options):base(options) { }	
+		public AppDbContext(DbContextOptions<AppDbContext>options):base(options) { }
+		
 	}
 }

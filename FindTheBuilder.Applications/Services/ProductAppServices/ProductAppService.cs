@@ -2,6 +2,7 @@
 using FindTheBuilder.Applications.Services.ProductAppServices.DTO;
 using FindTheBuilder.Databases;
 using FindTheBuilder.Databases.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,11 +44,28 @@ namespace FindTheBuilder.Applications.Services.ProductAppServices
 
 		public Products Update(UpdateProductDTO model)
 		{
-			var product = _mapper.Map<Products>(model);
-			_context.Products.Update(product);
-			_context.SaveChanges();
+			var getProduct = GetById(model.Id);
+			if(getProduct.Id != 0)
+			{
+				var product = _mapper.Map<Products>(model);
+				_context.Products.Update(product);
+				_context.SaveChanges();
 
-			return product;
+				return product;
+			}
+
+			return new Products() { Type = null };
+		}
+
+		private Products GetById(int id)
+		{
+			var product = new Products();
+			var getProduct = _context.Products.FirstOrDefault(x => x.Id == id);
+			if (getProduct == null)
+			{
+				return product;
+			}
+			return product = getProduct;
 		}
 	}
 }

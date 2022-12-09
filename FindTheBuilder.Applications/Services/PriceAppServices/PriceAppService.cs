@@ -94,11 +94,28 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 
 		public Prices Update(UpdatePriceDTO model)
 		{
-			var price = _mapper.Map<Prices>(model);
-			_context.Prices.Update(price);
-			_context.SaveChanges();
+			var getPrice = GetById(model.Id);
+			if (getPrice.Id != 0)
+			{
+				var price = _mapper.Map<Prices>(model);
+				_context.Prices.Update(price);
+				_context.SaveChanges();
 
-			return price;
+				return price;
+			}
+
+			return new Prices() { Product = null };
+		}
+
+		private Prices GetById(int id)
+		{
+			var price = new Prices();
+			var getPrice = _context.Prices.FirstOrDefault(x => x.Id == id);
+			if (getPrice == null)
+			{
+				return price;
+			}
+			return price = getPrice;
 		}
 	}
 }

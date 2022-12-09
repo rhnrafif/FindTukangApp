@@ -55,6 +55,9 @@ builder.Services.AddTransient<ITransactionDetailAppService, TransactionDetailApp
 builder.Services.AddTransient<IPaymentAppService, PaymentAppService>();
 
 builder.Services.AddControllers();
+builder.Services.AddControllersWithViews()
+	.AddNewtonsoftJson(option => option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 

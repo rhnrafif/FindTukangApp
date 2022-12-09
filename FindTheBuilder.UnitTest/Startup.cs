@@ -1,5 +1,7 @@
 ﻿using FindTheBuilder.Applications.ConfigProfile;
 using FindTheBuilder.Applications.Services.CustomerAppServices;
+using FindTheBuilder.Applications.Services.PriceAppServices;
+using FindTheBuilder.Applications.Services.TransactionAppServices;
 using FindTheBuilder.Applications.Services.TukangAppServices;
 using FindTheBuilder.Databases;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +32,8 @@ namespace FindTheBuilder.UnitTest
 			service.AddSingleton(mapper);
 			service.AddTransient<ICustomerAppService, CustomerAppService>();
 			service.AddTransient<ITukangAppService, TukangAppService>();
+			service.AddTransient<IPriceAppService, PriceAppService>();
+			service.AddTransient<ITransactionAppService, TransactionAppService>();
 			ServiceProvider = service.BuildServiceProvider();
 		}
 

@@ -19,9 +19,13 @@ namespace FindTheBuilder.UnitTest
 		public Startup()
 		{
 			var service = new ServiceCollection();
+			//service.AddDbContext<AppDbContext>(opt =>
+			//	opt.UseInMemoryDatabase
+			//	("Server = Mad\\SQLEXPRESS; Database = REST_API; Trusted_Connection = True; TrustServerCertificate = True; "));
+
 			service.AddDbContext<AppDbContext>(opt =>
 				opt.UseInMemoryDatabase
-				("Server = Mad\\SQLEXPRESS; Database = REST_API; Trusted_Connection = True; TrustServerCertificate = True; "));
+				("Server=RHNRAFIF\\SQLEXPRESS;Database=TukangDB;Trusted_Connection=True;TrustServerCertificate=True;"));
 			var config = new AutoMapper.MapperConfiguration(cfg =>
 			{
 				cfg.AddProfile(new ConfigurationProfile());

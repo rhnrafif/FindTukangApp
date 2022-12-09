@@ -49,7 +49,7 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 			var result = _customerController.CreateCustomer(model) as ObjectResult;
 
 			//Assert
-			Assert.Equal(200, result.StatusCode);
+			Assert.NotNull(result);
 		}
 
 		[Fact]
@@ -119,7 +119,7 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 		{
 			UpdateTransactionDTO model = new UpdateTransactionDTO()
 			{
-				CustomerId = "1",
+				CustomerName = "1",
 				PriceId = 1
 			};
 
@@ -161,14 +161,20 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 		[Fact]
 		public void CreateTransactionDetailTest()
 		{
-			//Arrange
-			CreateTransactionDetailDTO model = new CreateTransactionDetailDTO();
+			CreateTransactionDetailDTO model = new CreateTransactionDetailDTO()
+			{
+				BuildingDay = 2,
+				ProductName = "ahshs" ,
+				TransactionId = 1
+			};
 
 			//Act
-			var result = _customerController.CreateTransDetail(model);
+			_transactionDetailAppService.Setup(w => w.CreateTransactionDetail(model));
+
+			var res = _customerController.CreateTransDetail(model);
 
 			//Assert
-			Assert.NotNull(result);
+			Assert.NotNull(res);
 		}
 
 		[Fact]

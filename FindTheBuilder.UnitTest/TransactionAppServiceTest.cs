@@ -31,5 +31,21 @@ namespace FindTheBuilder.UnitTest
 			var result = service.Create(trans);
 			Assert.NotNull(result);
 		}
+		
+		[Fact]
+		public void Update()
+		{
+			var service = _serviceProvider.GetService<ITransactionAppService>();
+
+			UpdateTransactionDTO trans = new UpdateTransactionDTO()
+			{
+				Id= 1,
+				
+				PriceId= 1
+			};
+
+			var result = service.Update(trans);
+			Assert.NotNull(result);
+		}
 	}
 }

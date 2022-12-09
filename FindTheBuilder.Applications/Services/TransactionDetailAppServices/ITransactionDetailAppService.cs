@@ -11,5 +11,6 @@ namespace FindTheBuilder.Applications.Services.TransactionDetailAppServices
 	public interface ITransactionDetailAppService
 	{
 		PagedResult<TransactionDetailDTO> GetAllTransactions(PageInfo pageInfo);
+		TransactionDetailDTO CreateTransactionDetail(CreateTransactionDetailDTO model);
 	}
 }

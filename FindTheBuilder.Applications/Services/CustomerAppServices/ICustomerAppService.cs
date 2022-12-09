@@ -13,5 +13,6 @@ namespace FindTheBuilder.Applications.Services.CustomerAppServices
 		Customers Create(CustomerDTO model);
 		Customers Update(UpdateCustomerDTO model);
 		Customers GetByName (string name);
+		Customers GetById(int id);
 	}
 }

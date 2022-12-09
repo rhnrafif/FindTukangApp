@@ -43,6 +43,16 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 			return price;
 		}
 
+		public Prices GetPriceById(int id)
+		{
+			var price = _context.Prices.FirstOrDefault(w => w.Id == id);
+			if (price != null)
+			{
+				return price;
+			}
+			return price;
+		}
+
 		public PagedResult<PriceListDTO> GetPriceByProduct(PageInfo pageInfo)
 		{
 			var pagedResult = new PagedResult<PriceListDTO>
@@ -69,6 +79,17 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 			};
 
 			return pagedResult;
+		}
+
+		public PriceDTO GetPriceByProductId(int productId)
+		{
+			var prices = new PriceDTO();
+			var price = _context.Prices.FirstOrDefault(w => w.ProductId == productId);
+			if (price != null)
+			{
+				prices = _mapper.Map<PriceDTO>(price);
+			}
+			return prices;
 		}
 
 		public Prices Update(UpdatePriceDTO model)

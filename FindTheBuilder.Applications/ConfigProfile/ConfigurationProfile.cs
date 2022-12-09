@@ -14,6 +14,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using FindTheBuilder.Applications.Services.TransactionDetailAppServices.DTO;
 
 namespace FindTheBuilder.Applications.ConfigProfile
 {
@@ -56,6 +57,13 @@ namespace FindTheBuilder.Applications.ConfigProfile
 
 			CreateMap<Prices, UpdatePriceDTO>();
 			CreateMap<UpdatePriceDTO, Prices>();
+
+			//Transaction details
+			CreateMap<TransactionDetails, CreateTransactionDetailDTO>();
+			CreateMap<CreateTransactionDetailDTO, TransactionDetails>();
+
+			CreateMap<TransactionDetails, TransactionDetailDTO>();
+			CreateMap<TransactionDetailDTO, TransactionDetails>();
 
 			// Transaction
 			CreateMap<Transactions, TransactionDTO>();

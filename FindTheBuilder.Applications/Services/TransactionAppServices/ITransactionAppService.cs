@@ -12,5 +12,7 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 	{
 		Transactions Create(TransactionDTO model);
 		Transactions Update(UpdateTransactionDTO model);
+		Transactions UpdatePayment(int transId);
+		ICollection<Transactions> GetTransActiveByName(string name);
 	}
 }

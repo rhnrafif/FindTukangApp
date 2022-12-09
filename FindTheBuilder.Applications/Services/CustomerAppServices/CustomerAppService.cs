@@ -55,5 +55,16 @@ namespace FindTheBuilder.Applications.Services.CustomerAppServices
 			}
 			return new Customers() { Name = null };
 		}
+
+		public Customers GetById(int id)
+		{
+			var customer = new Customers();
+			var cust = _context.Customers.AsNoTracking().FirstOrDefault(w => w.Id == id);
+			if (cust == null)
+			{
+				return customer;
+			}
+			return customer = cust;
+		}
 	}
 }

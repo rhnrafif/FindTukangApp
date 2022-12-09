@@ -16,7 +16,7 @@ namespace FindTheBuilder.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[Authorize(Roles ="Customer")]
+	//[Authorize(Roles ="Customer")]
 	public class CustomerController : ControllerBase
 	{
 		private readonly ICustomerAppService _customerAppService;
@@ -141,6 +141,47 @@ namespace FindTheBuilder.Controllers
 				return Requests.Response(this, new ApiStatus(200), data, "Success");
 			}
 			catch(DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
+		}
+
+
+		[HttpGet("GetActiveTransaction")]
+		//[Authorize(Roles = "Customer")]
+		public IActionResult GetActiveTransactionByName(string name)
+		{
+			try
+			{
+				var data = _transactionAppService.GetTransActiveByName(name);
+				if (data.Count() == 0)
+				{
+					return Requests.Response(this, new ApiStatus(404), null, "No Transaction");
+				}
+				return Requests.Response(this, new ApiStatus(200), data, "Success");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
+		}
+
+		//TransactionDetail
+		[HttpPost("create-detail-transaction")]
+		//[Authorize(Roles = "Customer")]
+		public IActionResult CreateTransDetail([FromBody] CreateTransactionDetailDTO model)
+		{
+			try
+			{
+				var data = _transactionDetailAppService.CreateTransactionDetail(model);
+				if (data.Id != 0)
+				{
+					return Requests.Response(this, new ApiStatus(200), data, "Success");
+				}
+
+				return Requests.Response(this, new ApiStatus(400), data, "Error");
+			}
+			catch (DbException de)
 			{
 				return Requests.Response(this, new ApiStatus(500), null, de.Message);
 			}

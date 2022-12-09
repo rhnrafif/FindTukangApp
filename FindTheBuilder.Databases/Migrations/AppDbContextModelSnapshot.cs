@@ -82,6 +82,10 @@ namespace FindTheBuilder.Databases.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
+                    b.Property<string>("Product")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
@@ -90,10 +94,6 @@ namespace FindTheBuilder.Databases.Migrations
 
                     b.Property<int>("TukangId")
                         .HasColumnType("int");
-
-                    b.Property<string>("product")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

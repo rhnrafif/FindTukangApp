@@ -17,7 +17,7 @@ namespace FindTheBuilder.Databases.Models
 		public int Id { get; set; }
 		public int TukangId { get; set; }
 		public int SkillId { get; set; }
-		public string product { get; set; }
+		public string Product { get; set; }
 		public int Size { get; set; }
 		public float Price { get; set; }
 		

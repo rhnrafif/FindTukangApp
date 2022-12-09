@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FindTheBuilder.Databases.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221209060532_InitialCreate")]
+    [Migration("20221209061949_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -85,6 +85,10 @@ namespace FindTheBuilder.Databases.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
+                    b.Property<string>("Product")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
@@ -93,10 +97,6 @@ namespace FindTheBuilder.Databases.Migrations
 
                     b.Property<int>("TukangId")
                         .HasColumnType("int");
-
-                    b.Property<string>("product")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

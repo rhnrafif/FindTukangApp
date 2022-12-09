@@ -77,7 +77,7 @@ namespace FindTheBuilder.Databases.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TukangId = table.Column<int>(type: "int", nullable: false),
                     SkillId = table.Column<int>(type: "int", nullable: false),
-                    product = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Product = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Size = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false)
                 },

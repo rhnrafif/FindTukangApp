@@ -9,7 +9,8 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices.DTO
 	public class PriceDTO
 	{
 		public int TukangId { get; set; }
-		public int ProductId { get; set; }
+		public int SkillId { get; set; }
+		public string Product { get; set; }
 		public int Size { get; set; }
 		public float Price { get; set; }
 	}

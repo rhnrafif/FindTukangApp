@@ -20,13 +20,13 @@ namespace FindTheBuilder.Applications.Services.CustomerAppServices
 			_context = context;
 			_mapper = mapper;
 		}
-		public Customers Create(CustomerDTO model)
+		public bool Create(CustomerDTO model)
 		{
 			var customer = _mapper.Map<Customers>(model);
 			_context.Customers.Add(customer);
 			_context.SaveChanges();
 
-			return customer;
+			return true;
 		}
 
 		public Customers GetByName(string name)
@@ -40,7 +40,7 @@ namespace FindTheBuilder.Applications.Services.CustomerAppServices
 			return customer = cust;
 		}
 
-		public Customers Update(UpdateCustomerDTO model)
+		public bool Update(UpdateCustomerDTO model)
 		{
 			var cust = GetByName(model.Name);
 
@@ -51,9 +51,9 @@ namespace FindTheBuilder.Applications.Services.CustomerAppServices
 				_context.Customers.Update(customer);
 				_context.SaveChanges();
 
-				return customer;
+				return true;
 			}
-			return new Customers() { Name = null };
+			return false;
 		}
 
 		public Customers GetById(int id)

@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FindTheBuilder.Applications\FindTheBuilder.Applications.csproj" />
+    <ProjectReference Include="..\FindTheBuilder\FindTheBuilder.csproj" />
   </ItemGroup>
 
 </Project>

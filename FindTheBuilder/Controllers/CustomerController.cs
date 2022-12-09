@@ -44,8 +44,12 @@ namespace FindTheBuilder.Controllers
 			{
 				if(model.Name != null)
 				{
-					_customerAppService.Create(model);
-					return Requests.Response(this, new ApiStatus(200), null, "Success");
+					var isAdded = _customerAppService.Create(model);
+					if (isAdded)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(500), null, "Error");
 				}
 				return Requests.Response(this, new ApiStatus(400), null, "Error");
 			}
@@ -65,7 +69,7 @@ namespace FindTheBuilder.Controllers
 				if (model.Name != null)
 				{
 					var res = _customerAppService.Update(model);
-					if(res.Name != null)
+					if(res)
 					{
 						return Requests.Response(this, new ApiStatus(200), null, "Success");
 					}

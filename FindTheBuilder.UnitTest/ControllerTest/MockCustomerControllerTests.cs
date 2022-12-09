@@ -119,7 +119,7 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 		{
 			UpdateTransactionDTO model = new UpdateTransactionDTO()
 			{
-				CustomerId = 1,
+				CustomerId = "1",
 				PriceId = 1
 			};
 

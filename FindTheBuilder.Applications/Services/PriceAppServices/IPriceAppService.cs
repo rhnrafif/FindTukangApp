@@ -15,7 +15,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 		Prices Update(UpdatePriceDTO model);
 		Prices Delete(string product);
 		PagedResult<PriceListDTO> GetPriceByProduct(PageInfo pageInfo);
-		PriceDTO GetPriceByProductId(int productId);
 		Prices GetPriceById(int id);
+		Prices GetByProduct(string product);
 	}
 }

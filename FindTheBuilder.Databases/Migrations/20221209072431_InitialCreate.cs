@@ -79,7 +79,8 @@ namespace FindTheBuilder.Databases.Migrations
                     SkillId = table.Column<int>(type: "int", nullable: false),
                     Product = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Size = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<float>(type: "real", nullable: false)
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

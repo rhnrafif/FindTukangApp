@@ -1,13 +1,13 @@
-﻿using FindTheBuilder.Applications.Services.PriceAppServices;
+﻿using FindTheBuilder.Applications.Helper;
+using FindTheBuilder.Applications.Services.PriceAppServices;
 using FindTheBuilder.Applications.Services.PriceAppServices.DTO;
-using FindTheBuilder.Applications.Services.SkillAppServices;
-using FindTheBuilder.Applications.Services.SkillAppServices.DTO;
 using FindTheBuilder.Applications.Services.TukangAppServices;
 using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using FindTheBuilder.Databases.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Common;
 
 namespace FindTheBuilder.Controllers
 {
@@ -17,55 +17,107 @@ namespace FindTheBuilder.Controllers
 	public class TukangController : ControllerBase
 	{
 		private readonly ITukangAppService _tukangAppService;
-		private readonly ISkillAppService _skillAppService;
 		private readonly IPriceAppService _priceAppService;
 
 		public TukangController(ITukangAppService tukangAppService, 
-			ISkillAppService skillAppService, 
 			IPriceAppService priceAppService)
 		{
 			_tukangAppService = tukangAppService;
-			_skillAppService = skillAppService;
 			_priceAppService = priceAppService;
 		}
 
 		// Tukang
-
 		[HttpPost("CreateTukang")]
 		[Authorize(Roles = "Tukang")]
-		public Tukang CreateTukang([FromBody] TukangDTO model)		
-		{			
-			return _tukangAppService.Create(model);
+		public IActionResult CreateTukang([FromBody] TukangDTO model)
+		{
+			try
+			{
+				if (model != null)
+				{
+					var res = _tukangAppService.Create(model);
+					if (res != null)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(404), null, "Error");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}			
 		}
 		
 		[HttpPatch("EditTukang")]
 		[Authorize(Roles = "Tukang")]
-		public Tukang EditTukang([FromBody] UpdateTukangDTO model)		
-		{			
-			return _tukangAppService.Update(model);
+		public IActionResult EditTukang([FromBody] UpdateTukangDTO model)		
+		{
+			try
+			{
+				if (model != null)
+				{
+					var res = _tukangAppService.Update(model);
+					if (res != null)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(404), null, "Error");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
 		}
-		
-		// Skill Tukang
-		[HttpPost("CreateSkill")]
+
+		// Prices
+		[HttpPost("CreatePricing")]
 		[Authorize(Roles = "Tukang")]
-		public Skills CreateSkill([FromBody] SkillDTO model)		
-		{			
-			return _skillAppService.Create(model);
+		public IActionResult CreatePricing([FromBody] PriceDTO model)
+		{
+			try
+			{
+				if (model != null)
+				{
+					var res = _priceAppService.Create(model);
+					if (res != null)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(404), null, "Error");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
 		}
-		
-		[HttpPatch("EditSkill")]
+
+		[HttpPatch("EditPricing")]
 		[Authorize(Roles = "Tukang")]
-		public Skills EditSkill([FromBody] UpdateSkillDTO model)		
-		{			
-			return _skillAppService.Update(model);
+		public IActionResult EditPricing([FromBody] UpdatePriceDTO model)
+		{
+			try
+			{
+				if (model != null)
+				{
+					var res = _priceAppService.Update(model);
+					if (res != null)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(404), null, "Error");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
 		}
-		
-		[HttpDelete("DeleteSkill")]
-		[Authorize(Roles = "Tukang")]
-		public Skills DeleteSkill(int id)		
-		{			
-			return _skillAppService.Delete(id);
-		}	
-		
 	}
 }

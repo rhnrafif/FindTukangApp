@@ -3,6 +3,7 @@ using FindTheBuilder.Applications.Helper;
 using FindTheBuilder.Applications.Services.PriceAppServices.DTO;
 using FindTheBuilder.Databases;
 using FindTheBuilder.Databases.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 		public Prices Create(PriceDTO model)
 		{
 			var price = _mapper.Map<Prices>(model);
+			price.IsDeleted = false;
 			_context.Prices.Add(price);
 			_context.SaveChanges();
 
@@ -33,10 +35,11 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 
 		public Prices Delete(int id)
 		{
-			var price = _context.Prices.FirstOrDefault(x => x.Id == id);
+			var price = _context.Prices.AsNoTracking().FirstOrDefault(x => x.Id == id);
 			if (price != null)
 			{
-				_context.Prices.Remove(price);
+				price.IsDeleted = true;
+				_context.Prices.Update(price);
 				_context.SaveChanges();
 			}
 
@@ -59,7 +62,8 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 							TukangProducts = price.Product,
 							Size = price.Size,
 							Price = price.Price
-						}).Skip(pageInfo.Skip)
+						}).Where(w => w.IsDeleted == false)
+						.Skip(pageInfo.Skip)
 						.Take(pageInfo.PageSize)
 						.OrderBy(w => w.TukangSkill),
 						Total = _context.Prices.Count()
@@ -70,7 +74,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 
 		public Prices Update(UpdatePriceDTO model)
 		{
-			var getPrice = GetById(model.Id);
+			var getPrice = GetByProduct(model.Product);
 			if (getPrice.Id != 0)
 			{
 				var price = _mapper.Map<Prices>(model);
@@ -83,14 +87,15 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 			return new Prices();
 		}
 
-		private Prices GetById(int id)
+		private Prices GetByProduct(string product)
 		{
 			var price = new Prices();
-			var getPrice = _context.Prices.FirstOrDefault(x => x.Id == id);
+			var getPrice = _context.Prices.AsNoTracking().FirstOrDefault(x => x.Product == product);
 			if (getPrice == null)
 			{
 				return price;
 			}
+
 			return price = getPrice;
 		}
 	}

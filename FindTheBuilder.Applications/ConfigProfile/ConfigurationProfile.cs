@@ -2,7 +2,6 @@
 
 using FindTheBuilder.Applications.Services.CustomerAppServices.DTO;
 using FindTheBuilder.Applications.Services.PriceAppServices.DTO;
-using FindTheBuilder.Applications.Services.SkillAppServices.DTO;
 using FindTheBuilder.Applications.Services.TransactionAppServices.DTO;
 using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using FindTheBuilder.Applications.Services.AuthAppServices.Dto;
@@ -33,14 +32,7 @@ namespace FindTheBuilder.Applications.ConfigProfile
 			CreateMap<Tukang, TukangDTO>();
 			
 			CreateMap<Tukang, UpdateTukangDTO>();
-			CreateMap<UpdateTukangDTO, Tukang>();			
-
-			// Skill
-			CreateMap<Skills, SkillDTO>();
-			CreateMap<SkillDTO, Skills>();
-
-			CreateMap<UpdateSkillDTO, Skills>();
-			CreateMap<Skills, UpdateSkillDTO>();
+			CreateMap<UpdateTukangDTO, Tukang>();		
 
 			// Price
 			CreateMap<Prices, PriceDTO>();

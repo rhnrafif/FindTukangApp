@@ -93,7 +93,7 @@ namespace FindTheBuilder.Controllers
 					{
 						return Requests.Response(this, new ApiStatus(200), null, "Success");
 					}
-					return Requests.Response(this, new ApiStatus(400), null, "Error");
+					return Requests.Response(this, new ApiStatus(404), null, "Error");
 				}
 				return Requests.Response(this, new ApiStatus(400), null, "Error");
 			}

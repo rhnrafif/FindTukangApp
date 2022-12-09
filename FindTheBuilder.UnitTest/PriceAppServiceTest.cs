@@ -28,10 +28,7 @@ namespace FindTheBuilder.UnitTest
 
 			PriceDTO price = new PriceDTO()
 			{
-				TukangId= 1,
-				ProductId= 1,
-				Size= 20,
-				Price= 12000000
+				
 			};
 
 			var result = service.Create(price);

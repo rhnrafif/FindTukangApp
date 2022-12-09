@@ -20,6 +20,7 @@ namespace FindTheBuilder.Databases.Models
 		public string Product { get; set; }
 		public int Size { get; set; }
 		public float Price { get; set; }
+		public bool IsDeleted { get; set; }
 		
 
 		public virtual Tukang Tukang { get; set; }

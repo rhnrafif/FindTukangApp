@@ -79,6 +79,9 @@ namespace FindTheBuilder.Databases.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<float>("Price")
                         .HasColumnType("real");
 

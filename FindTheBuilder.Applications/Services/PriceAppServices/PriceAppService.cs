@@ -47,25 +47,8 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 		{
 			var pagedResult = new PagedResult<PriceListDTO>
 			{
-				Data = (
-				from price in _context.Prices
-				join tukang in _context.Tukang
-				on price.TukangId equals tukang.Id
-				join skill in _context.Skills
-				on tukang.SkillId equals skill.Id
-				join product in _context.Products
-				on price.ProductId equals product.Id
-				select new PriceListDTO
-				{
-					TukangName = tukang.Name,
-					TukangSkill = skill.Name,
-					TukangProducts = product.Type,
-					Size = price.Size,
-					Price = price.Price
-				}).Skip(pageInfo.Skip)
-				.Take(pageInfo.PageSize)
-				.OrderBy(w => w.TukangProducts),
-				Total = _context.Products.Count()
+				
+				
 			};
 
 			return pagedResult;
@@ -83,7 +66,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 				return price;
 			}
 
-			return new Prices() { Product = null };
+			return new Prices();
 		}
 
 		private Prices GetById(int id)

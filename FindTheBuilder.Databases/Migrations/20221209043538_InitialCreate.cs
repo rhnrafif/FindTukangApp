@@ -42,36 +42,16 @@ namespace FindTheBuilder.Databases.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "product",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_product", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "skill",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_skill", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_skill_product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,18 +60,11 @@ namespace FindTheBuilder.Databases.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SkillId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tukang", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_tukang_skill_SkillId",
-                        column: x => x.SkillId,
-                        principalTable: "skill",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -100,8 +73,9 @@ namespace FindTheBuilder.Databases.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TukangId = table.Column<int>(type: "int", nullable: true),
-                    ProductId = table.Column<int>(type: "int", nullable: true),
+                    TukangId = table.Column<int>(type: "int", nullable: false),
+                    SkillId = table.Column<int>(type: "int", nullable: false),
+                    product = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Size = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false)
                 },
@@ -109,15 +83,17 @@ namespace FindTheBuilder.Databases.Migrations
                 {
                     table.PrimaryKey("PK_price", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_price_product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "product",
-                        principalColumn: "Id");
+                        name: "FK_price_skill_SkillId",
+                        column: x => x.SkillId,
+                        principalTable: "skill",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_price_tukang_TukangId",
                         column: x => x.TukangId,
                         principalTable: "tukang",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,19 +146,14 @@ namespace FindTheBuilder.Databases.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_price_ProductId",
+                name: "IX_price_SkillId",
                 table: "price",
-                column: "ProductId");
+                column: "SkillId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_price_TukangId",
                 table: "price",
                 column: "TukangId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_skill_ProductId",
-                table: "skill",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_transaction_CustomerId",
@@ -198,11 +169,6 @@ namespace FindTheBuilder.Databases.Migrations
                 name: "IX_transaction_detail_TransactionId",
                 table: "transaction_detail",
                 column: "TransactionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_tukang_SkillId",
-                table: "tukang",
-                column: "SkillId");
         }
 
         /// <inheritdoc />
@@ -224,13 +190,10 @@ namespace FindTheBuilder.Databases.Migrations
                 name: "price");
 
             migrationBuilder.DropTable(
-                name: "tukang");
-
-            migrationBuilder.DropTable(
                 name: "skill");
 
             migrationBuilder.DropTable(
-                name: "product");
+                name: "tukang");
         }
     }
 }

@@ -70,50 +70,7 @@ namespace FindTheBuilder.Controllers
 		public Skills DeleteSkill(int id)		
 		{			
 			return _skillAppService.Delete(id);
-		}
+		}	
 		
-		// Product Tukang
-		[HttpPost("CreateProduct")]
-		[Authorize(Roles = "Tukang")]
-		public Products CreateProduct([FromBody] ProductDTO model)		
-		{			
-			return _productAppService.Create(model);
-		}
-		
-		[HttpPatch("EditProduct")]
-		[Authorize(Roles = "Tukang")]
-		public Products EditProduct([FromBody] UpdateProductDTO model)		
-		{			
-			return _productAppService.Update(model);
-		}
-		
-		[HttpDelete("DeleteProduct")]
-		[Authorize(Roles = "Tukang")]
-		public Products DeleteProduct(int id)		
-		{			
-			return _productAppService.Delete(id);
-		}
-		
-		// Price Tukang
-		[HttpPost("CreatePrice")]
-		[Authorize(Roles = "Tukang")]
-		public Prices CreatePrice([FromBody] PriceDTO model)		
-		{			
-			return _priceAppService.Create(model);
-		}
-		
-		[HttpPatch("EditPrice")]
-		[Authorize(Roles = "Tukang")]
-		public Prices EditPrice([FromBody] UpdatePriceDTO model)		
-		{			
-			return _priceAppService.Update(model);
-		}
-		
-		[HttpDelete("DeletePrice")]
-		[Authorize(Roles = "Tukang")]
-		public Prices DeletePrice(int id)		
-		{			
-			return _priceAppService.Delete(id);
-		}
 	}
 }

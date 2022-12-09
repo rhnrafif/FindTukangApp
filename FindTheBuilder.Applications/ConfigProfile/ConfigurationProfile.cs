@@ -34,14 +34,7 @@ namespace FindTheBuilder.Applications.ConfigProfile
 			CreateMap<Tukang, TukangDTO>();
 			
 			CreateMap<Tukang, UpdateTukangDTO>();
-			CreateMap<UpdateTukangDTO, Tukang>();
-
-			// Product
-			CreateMap<Products, ProductDTO>();
-			CreateMap<ProductDTO, Products>();
-
-			CreateMap<Products, UpdateProductDTO>();
-			CreateMap<UpdateProductDTO, Products>();
+			CreateMap<UpdateTukangDTO, Tukang>();			
 
 			// Skill
 			CreateMap<Skills, SkillDTO>();

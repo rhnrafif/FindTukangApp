@@ -10,8 +10,5 @@ namespace FindTheBuilder.Applications.Services.ProductAppServices
 {
 	public interface IProductAppService
 	{
-		Products Create (ProductDTO model);
-		Products Update (UpdateProductDTO model);
-		Products Delete( int id);
 	}
 }

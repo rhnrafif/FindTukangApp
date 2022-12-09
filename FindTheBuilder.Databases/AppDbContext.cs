@@ -15,7 +15,6 @@ namespace FindTheBuilder.Databases
 		public DbSet<Tukang> Tukang { get; set; }
 		public DbSet<Skills> Skills { get; set; }
 		public DbSet<Prices> Prices { get; set; }
-		public DbSet<Products> Products { get; set; }
 		public DbSet<TransactionDetails> TransactionDetails { get; set; }
 		public DbSet<Transactions> Transactions { get; set; }
 

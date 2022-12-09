@@ -15,9 +15,7 @@ namespace FindTheBuilder.Databases.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public int ProductId { get; set; }
 
-		public virtual Products Product { get; set; }
-		public virtual IEnumerable<Tukang> Tukang { get; set; }
+		public virtual IEnumerable<Prices> Prices { get; set; }
 	}
 }

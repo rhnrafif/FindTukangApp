@@ -13,5 +13,6 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices.DTO
 		public string TukangProducts { get; set; }
 		public int Size { get; set; }
 		public float Price { get; set; }
+		public bool IsDeleted { get; set; }
 	}
 }

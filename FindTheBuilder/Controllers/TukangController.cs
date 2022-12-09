@@ -1,15 +1,13 @@
-﻿using FindTheBuilder.Applications.Services.PriceAppServices;
+﻿using FindTheBuilder.Applications.Helper;
+using FindTheBuilder.Applications.Services.PriceAppServices;
 using FindTheBuilder.Applications.Services.PriceAppServices.DTO;
-using FindTheBuilder.Applications.Services.ProductAppServices;
-using FindTheBuilder.Applications.Services.ProductAppServices.DTO;
-using FindTheBuilder.Applications.Services.SkillAppServices;
-using FindTheBuilder.Applications.Services.SkillAppServices.DTO;
 using FindTheBuilder.Applications.Services.TukangAppServices;
 using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using FindTheBuilder.Databases.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Common;
 
 namespace FindTheBuilder.Controllers
 {
@@ -19,101 +17,130 @@ namespace FindTheBuilder.Controllers
 	public class TukangController : ControllerBase
 	{
 		private readonly ITukangAppService _tukangAppService;
-		private readonly ISkillAppService _skillAppService;
-		private readonly IProductAppService _productAppService;
 		private readonly IPriceAppService _priceAppService;
 
 		public TukangController(ITukangAppService tukangAppService, 
-			ISkillAppService skillAppService, 
-			IProductAppService productAppService, 
 			IPriceAppService priceAppService)
 		{
 			_tukangAppService = tukangAppService;
-			_skillAppService = skillAppService;
-			_productAppService = productAppService;
 			_priceAppService = priceAppService;
 		}
 
 		// Tukang
-
 		[HttpPost("CreateTukang")]
 		[Authorize(Roles = "Tukang")]
-		public Tukang CreateTukang([FromBody] TukangDTO model)		
-		{			
-			return _tukangAppService.Create(model);
+		public IActionResult CreateTukang([FromBody] TukangDTO model)
+		{
+			try
+			{
+				if (model != null)
+				{
+					var res = _tukangAppService.Create(model);
+					if (res != null)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}			
 		}
 		
 		[HttpPatch("EditTukang")]
 		[Authorize(Roles = "Tukang")]
-		public Tukang EditTukang([FromBody] UpdateTukangDTO model)		
-		{			
-			return _tukangAppService.Update(model);
+		public IActionResult EditTukang([FromBody] UpdateTukangDTO model)		
+		{
+			try
+			{
+				if (model != null)
+				{
+					var res = _tukangAppService.Update(model);
+					if (res != null)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
+		}
+
+		// Prices
+		[HttpPost("CreatePricing")]
+		[Authorize(Roles = "Tukang")]
+		public IActionResult CreatePricing([FromBody] PriceDTO model)
+		{
+			try
+			{
+				if (model != null)
+				{
+					var res = _priceAppService.Create(model);
+					if (res != null)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
+		}
+
+		[HttpPatch("EditPricing")]
+		[Authorize(Roles = "Tukang")]
+		public IActionResult EditPricing([FromBody] UpdatePriceDTO model)
+		{
+			try
+			{
+				if (model != null)
+				{
+					var res = _priceAppService.Update(model);
+					if (res != null)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
 		}
 		
-		// Skill Tukang
-		[HttpPost("CreateSkill")]
+		[HttpPatch("DeletePricing")]
 		[Authorize(Roles = "Tukang")]
-		public Skills CreateSkill([FromBody] SkillDTO model)		
-		{			
-			return _skillAppService.Create(model);
-		}
-		
-		[HttpPatch("EditSkill")]
-		[Authorize(Roles = "Tukang")]
-		public Skills EditSkill([FromBody] UpdateSkillDTO model)		
-		{			
-			return _skillAppService.Update(model);
-		}
-		
-		[HttpDelete("DeleteSkill")]
-		[Authorize(Roles = "Tukang")]
-		public Skills DeleteSkill(int id)		
-		{			
-			return _skillAppService.Delete(id);
-		}
-		
-		// Product Tukang
-		[HttpPost("CreateProduct")]
-		[Authorize(Roles = "Tukang")]
-		public Products CreateProduct([FromBody] ProductDTO model)		
-		{			
-			return _productAppService.Create(model);
-		}
-		
-		[HttpPatch("EditProduct")]
-		[Authorize(Roles = "Tukang")]
-		public Products EditProduct([FromBody] UpdateProductDTO model)		
-		{			
-			return _productAppService.Update(model);
-		}
-		
-		[HttpDelete("DeleteProduct")]
-		[Authorize(Roles = "Tukang")]
-		public Products DeleteProduct(int id)		
-		{			
-			return _productAppService.Delete(id);
-		}
-		
-		// Price Tukang
-		[HttpPost("CreatePrice")]
-		[Authorize(Roles = "Tukang")]
-		public Prices CreatePrice([FromBody] PriceDTO model)		
-		{			
-			return _priceAppService.Create(model);
-		}
-		
-		[HttpPatch("EditPrice")]
-		[Authorize(Roles = "Tukang")]
-		public Prices EditPrice([FromBody] UpdatePriceDTO model)		
-		{			
-			return _priceAppService.Update(model);
-		}
-		
-		[HttpDelete("DeletePrice")]
-		[Authorize(Roles = "Tukang")]
-		public Prices DeletePrice(int id)		
-		{			
-			return _priceAppService.Delete(id);
+		public IActionResult DeletPricing(string product)
+		{
+			try
+			{
+				if (product != null)
+				{
+					var res = _priceAppService.Delete(product);
+					if (res != null)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
 		}
 	}
 }

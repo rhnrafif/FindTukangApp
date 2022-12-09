@@ -2,6 +2,7 @@
 using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using FindTheBuilder.Databases;
 using FindTheBuilder.Databases.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace FindTheBuilder.Applications.Services.TukangAppServices
 		private Tukang GetByName (string name)
 		{
 			var tukang = new Tukang();
-			var getTukang = _context.Tukang.FirstOrDefault(x => x.Name == name);
+			var getTukang = _context.Tukang.AsNoTracking().FirstOrDefault(x => x.Name == name);
 			if (getTukang == null)
 			{
 				return tukang;

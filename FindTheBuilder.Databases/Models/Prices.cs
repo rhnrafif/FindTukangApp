@@ -15,14 +15,16 @@ namespace FindTheBuilder.Databases.Models
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
-		public int? TukangId { get; set; }
-		public int? ProductId { get; set; }
+		public int TukangId { get; set; }
+		public int SkillId { get; set; }
+		public string Product { get; set; }
 		public int Size { get; set; }
 		public float Price { get; set; }
+		public bool IsDeleted { get; set; }
 		
 
 		public virtual Tukang Tukang { get; set; }
-		public virtual Products Product { get; set; }
+		public virtual Skills Skill { get; set; }
 		public virtual IEnumerable<Transactions> Transactions { get; set; }
 	}
 }

@@ -30,7 +30,6 @@ namespace FindTheBuilder.UnitTest
 			};
 
 			var result = service.Create(tukang);
-
 			Assert.NotNull(result);
 		}
 		
@@ -42,12 +41,10 @@ namespace FindTheBuilder.UnitTest
 			UpdateTukangDTO update = new UpdateTukangDTO()
 			{
 				Id = 1,
-				Name = "Test",
-				SkillId = 2,
+				Name = "Tis"
 			};
 
 			var result = service.Update(update);
-
 			Assert.NotNull(result);
 		}
 	}

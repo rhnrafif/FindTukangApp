@@ -79,42 +79,32 @@ namespace FindTheBuilder.Databases.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<string>("Product")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TukangId")
+                    b.Property<int>("SkillId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TukangId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("SkillId");
 
                     b.HasIndex("TukangId");
 
                     b.ToTable("price");
-                });
-
-            modelBuilder.Entity("FindTheBuilder.Databases.Models.Products", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("product");
                 });
 
             modelBuilder.Entity("FindTheBuilder.Databases.Models.Skills", b =>
@@ -129,14 +119,26 @@ namespace FindTheBuilder.Databases.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
                     b.ToTable("skill");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "House"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Garden"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Pool"
+                        });
                 });
 
             modelBuilder.Entity("FindTheBuilder.Databases.Models.TransactionDetails", b =>
@@ -204,40 +206,28 @@ namespace FindTheBuilder.Databases.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SkillId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SkillId");
 
                     b.ToTable("tukang");
                 });
 
             modelBuilder.Entity("FindTheBuilder.Databases.Models.Prices", b =>
                 {
-                    b.HasOne("FindTheBuilder.Databases.Models.Products", "Product")
+                    b.HasOne("FindTheBuilder.Databases.Models.Skills", "Skill")
                         .WithMany("Prices")
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("FindTheBuilder.Databases.Models.Tukang", "Tukang")
-                        .WithMany("Prices")
-                        .HasForeignKey("TukangId");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Tukang");
-                });
-
-            modelBuilder.Entity("FindTheBuilder.Databases.Models.Skills", b =>
-                {
-                    b.HasOne("FindTheBuilder.Databases.Models.Products", "Product")
-                        .WithMany("Skill")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.HasOne("FindTheBuilder.Databases.Models.Tukang", "Tukang")
+                        .WithMany("Prices")
+                        .HasForeignKey("TukangId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Skill");
+
+                    b.Navigation("Tukang");
                 });
 
             modelBuilder.Entity("FindTheBuilder.Databases.Models.TransactionDetails", b =>
@@ -270,17 +260,6 @@ namespace FindTheBuilder.Databases.Migrations
                     b.Navigation("Price");
                 });
 
-            modelBuilder.Entity("FindTheBuilder.Databases.Models.Tukang", b =>
-                {
-                    b.HasOne("FindTheBuilder.Databases.Models.Skills", "Skill")
-                        .WithMany("Tukang")
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Skill");
-                });
-
             modelBuilder.Entity("FindTheBuilder.Databases.Models.Customers", b =>
                 {
                     b.Navigation("Transactions");
@@ -291,16 +270,9 @@ namespace FindTheBuilder.Databases.Migrations
                     b.Navigation("Transactions");
                 });
 
-            modelBuilder.Entity("FindTheBuilder.Databases.Models.Products", b =>
-                {
-                    b.Navigation("Prices");
-
-                    b.Navigation("Skill");
-                });
-
             modelBuilder.Entity("FindTheBuilder.Databases.Models.Skills", b =>
                 {
-                    b.Navigation("Tukang");
+                    b.Navigation("Prices");
                 });
 
             modelBuilder.Entity("FindTheBuilder.Databases.Models.Transactions", b =>

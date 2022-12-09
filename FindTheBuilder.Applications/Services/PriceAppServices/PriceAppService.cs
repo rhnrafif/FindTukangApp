@@ -3,6 +3,7 @@ using FindTheBuilder.Applications.Helper;
 using FindTheBuilder.Applications.Services.PriceAppServices.DTO;
 using FindTheBuilder.Databases;
 using FindTheBuilder.Databases.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,18 +26,20 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 		public Prices Create(PriceDTO model)
 		{
 			var price = _mapper.Map<Prices>(model);
+			price.IsDeleted = false;
 			_context.Prices.Add(price);
 			_context.SaveChanges();
 
 			return price;
 		}
 
-		public Prices Delete(int id)
+		public Prices Delete(string product)
 		{
-			var price = _context.Prices.FirstOrDefault(x => x.Id == id);
+			var price = _context.Prices.AsNoTracking().FirstOrDefault(x => x.Product == product);
 			if (price != null)
 			{
-				_context.Prices.Remove(price);
+				price.IsDeleted = true;
+				_context.Prices.Update(price);
 				_context.SaveChanges();
 			}
 
@@ -57,25 +60,23 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 		{
 			var pagedResult = new PagedResult<PriceListDTO>
 			{
-				Data = (
-				from price in _context.Prices
-				join tukang in _context.Tukang
-				on price.TukangId equals tukang.Id
-				join skill in _context.Skills
-				on tukang.SkillId equals skill.Id
-				join product in _context.Products
-				on price.ProductId equals product.Id
-				select new PriceListDTO
-				{
-					TukangName = tukang.Name,
-					TukangSkill = skill.Name,
-					TukangProducts = product.Type,
-					Size = price.Size,
-					Price = price.Price
-				}).Skip(pageInfo.Skip)
-				.Take(pageInfo.PageSize)
-				.OrderBy(w => w.TukangProducts),
-				Total = _context.Products.Count()
+				Data = (from tukang in _context.Tukang
+						join price in _context.Prices
+						on tukang.Id equals price.TukangId
+						join skill in _context.Skills
+						on price.SkillId equals skill.Id
+						select new PriceListDTO
+						{
+							TukangName = tukang.Name,
+							TukangSkill = skill.Name,
+							TukangProducts = price.Product,
+							Size = price.Size,
+							Price = price.Price
+						}).Where(w => w.IsDeleted == false)
+						.Skip(pageInfo.Skip)
+						.Take(pageInfo.PageSize)
+						.OrderBy(w => w.TukangSkill),
+						Total = _context.Prices.Count()
 			};
 
 			return pagedResult;
@@ -94,27 +95,29 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 
 		public Prices Update(UpdatePriceDTO model)
 		{
-			var getPrice = GetById(model.Id);
+			var getPrice = GetByProduct(model.Product);
 			if (getPrice.Id != 0)
 			{
 				var price = _mapper.Map<Prices>(model);
+				getPrice.IsDeleted= false;
 				_context.Prices.Update(price);
 				_context.SaveChanges();
 
 				return price;
 			}
 
-			return new Prices() { Product = null };
+			return new Prices();
 		}
 
-		private Prices GetById(int id)
+		private Prices GetByProduct(string product)
 		{
 			var price = new Prices();
-			var getPrice = _context.Prices.FirstOrDefault(x => x.Id == id);
+			var getPrice = _context.Prices.AsNoTracking().FirstOrDefault(x => x.Product == product);
 			if (getPrice == null)
 			{
 				return price;
 			}
+
 			return price = getPrice;
 		}
 	}

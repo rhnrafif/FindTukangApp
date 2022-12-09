@@ -3,8 +3,6 @@ using FindTheBuilder.Applications.Services.AuthAppServices;
 using FindTheBuilder.Applications.Services.CustomerAppServices;
 using FindTheBuilder.Applications.Services.PaymentAppServices;
 using FindTheBuilder.Applications.Services.PriceAppServices;
-using FindTheBuilder.Applications.Services.ProductAppServices;
-using FindTheBuilder.Applications.Services.SkillAppServices;
 using FindTheBuilder.Applications.Services.TransactionAppServices;
 using FindTheBuilder.Applications.Services.TransactionDetailAppServices;
 using FindTheBuilder.Applications.Services.TukangAppServices;
@@ -51,12 +49,9 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddTransient<IAuthAppService, AuthAppService>();
 builder.Services.AddTransient<ITukangAppService, TukangAppService>();
 builder.Services.AddTransient<ICustomerAppService, CustomerAppService>();
-builder.Services.AddTransient<IProductAppService, ProductAppService>();
 builder.Services.AddTransient<ITransactionAppService, TransactionAppService>();
 builder.Services.AddTransient<IPriceAppService, PriceAppService>();
 builder.Services.AddTransient<ITransactionDetailAppService, TransactionDetailAppService>();
-builder.Services.AddTransient<ISkillAppService,SkillAppService>();
-
 builder.Services.AddTransient<IPaymentAppService, PaymentAppService>();
 
 builder.Services.AddControllers();

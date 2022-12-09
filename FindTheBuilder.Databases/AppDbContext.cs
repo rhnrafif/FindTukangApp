@@ -15,10 +15,19 @@ namespace FindTheBuilder.Databases
 		public DbSet<Tukang> Tukang { get; set; }
 		public DbSet<Skills> Skills { get; set; }
 		public DbSet<Prices> Prices { get; set; }
-		public DbSet<Products> Products { get; set; }
 		public DbSet<TransactionDetails> TransactionDetails { get; set; }
 		public DbSet<Transactions> Transactions { get; set; }
 
-		public AppDbContext(DbContextOptions<AppDbContext>options):base(options) { }	
+		public AppDbContext(DbContextOptions<AppDbContext>options):base(options) { }
+
+		protected override void OnModelCreating(ModelBuilder mod)
+		{
+			mod.Entity<Skills>().HasData(
+				new { Id = 1, Name = "House" },
+				new { Id = 2, Name = "Garden" },
+				new { Id = 3, Name = "Pool" }
+				);
+		}
+		
 	}
 }

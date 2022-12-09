@@ -13,7 +13,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 	{
 		Prices Create(PriceDTO model);
 		Prices Update(UpdatePriceDTO model);
-		Prices Delete(int id);
+		Prices Delete(string product);
 		PagedResult<PriceListDTO> GetPriceByProduct(PageInfo pageInfo);
 	}
 }

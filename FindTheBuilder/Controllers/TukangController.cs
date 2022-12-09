@@ -40,7 +40,7 @@ namespace FindTheBuilder.Controllers
 					{
 						return Requests.Response(this, new ApiStatus(200), null, "Success");
 					}
-					return Requests.Response(this, new ApiStatus(404), null, "Error");
+					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
 				}
 				return Requests.Response(this, new ApiStatus(400), null, "Error");
 			}
@@ -63,7 +63,7 @@ namespace FindTheBuilder.Controllers
 					{
 						return Requests.Response(this, new ApiStatus(200), null, "Success");
 					}
-					return Requests.Response(this, new ApiStatus(404), null, "Error");
+					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
 				}
 				return Requests.Response(this, new ApiStatus(400), null, "Error");
 			}
@@ -87,7 +87,7 @@ namespace FindTheBuilder.Controllers
 					{
 						return Requests.Response(this, new ApiStatus(200), null, "Success");
 					}
-					return Requests.Response(this, new ApiStatus(404), null, "Error");
+					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
 				}
 				return Requests.Response(this, new ApiStatus(400), null, "Error");
 			}
@@ -110,7 +110,30 @@ namespace FindTheBuilder.Controllers
 					{
 						return Requests.Response(this, new ApiStatus(200), null, "Success");
 					}
-					return Requests.Response(this, new ApiStatus(404), null, "Error");
+					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+				}
+				return Requests.Response(this, new ApiStatus(400), null, "Error");
+			}
+			catch (DbException de)
+			{
+				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+			}
+		}
+		
+		[HttpPatch("DeletePricing")]
+		[Authorize(Roles = "Tukang")]
+		public IActionResult DeletPricing(string product)
+		{
+			try
+			{
+				if (product != null)
+				{
+					var res = _priceAppService.Delete(product);
+					if (res != null)
+					{
+						return Requests.Response(this, new ApiStatus(200), null, "Success");
+					}
+					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
 				}
 				return Requests.Response(this, new ApiStatus(400), null, "Error");
 			}

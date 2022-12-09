@@ -33,9 +33,9 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 			return price;
 		}
 
-		public Prices Delete(int id)
+		public Prices Delete(string product)
 		{
-			var price = _context.Prices.AsNoTracking().FirstOrDefault(x => x.Id == id);
+			var price = _context.Prices.AsNoTracking().FirstOrDefault(x => x.Product == product);
 			if (price != null)
 			{
 				price.IsDeleted = true;
@@ -78,6 +78,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 			if (getPrice.Id != 0)
 			{
 				var price = _mapper.Map<Prices>(model);
+				getPrice.IsDeleted= false;
 				_context.Prices.Update(price);
 				_context.SaveChanges();
 

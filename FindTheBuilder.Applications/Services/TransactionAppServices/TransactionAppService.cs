@@ -75,6 +75,7 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 
 				return trans;
 			}
+			return transData;
 		}
 
 		public Transactions UpdatePayment(int transId)

@@ -26,6 +26,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 		public Prices Create(PriceDTO model)
 		{
 			var price = _mapper.Map<Prices>(model);
+
 			price.IsDeleted = false;
 			_context.Prices.Add(price);
 			_context.SaveChanges();
@@ -76,7 +77,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 						.Skip(pageInfo.Skip)
 						.Take(pageInfo.PageSize)
 						.OrderBy(w => w.TukangSkill),
-						Total = _context.Prices.Count()
+				Total = _context.Prices.Count()
 			};
 
 			return pagedResult;
@@ -88,7 +89,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 			if (getPrice.Id != 0)
 			{
 				var price = _mapper.Map<Prices>(model);
-				getPrice.IsDeleted= false;
+				getPrice.IsDeleted = false;
 				_context.Prices.Update(price);
 				_context.SaveChanges();
 

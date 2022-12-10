@@ -47,5 +47,27 @@ namespace FindTheBuilder.UnitTest.ServiceTest
             var result = service.Update(trans);
             Assert.NotNull(result);
         }
+
+        [Fact]
+        public void UpdatePayment()
+        {
+            var service = _serviceProvider.GetService<ITransactionAppService>();
+
+            int id = 1;
+
+            var result = service.UpdatePayment(id);
+            Assert.NotNull(result);
+        }
+        
+        [Fact]
+        public void GetActiveTransactionByName()
+        {
+            var service = _serviceProvider.GetService<ITransactionAppService>();
+
+            string name = "Agus Ketoprak";
+
+            var result = service.GetTransActiveByName(name);
+            Assert.NotNull(result);
+        }
     }
 }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using FindTheBuilder.Applications.Services.TukangAppServices;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using FindTheBuilder.Applications.Helper;
 
 namespace FindTheBuilder.UnitTest.ServiceTest
 {
@@ -67,5 +68,20 @@ namespace FindTheBuilder.UnitTest.ServiceTest
             var result = service.Delete(product);
             Assert.Null(result);
         }
+
+        [Fact]
+        public void GetAllPrices()
+        {
+            var service = _serviceProvider.GetService<IPriceAppService>();
+
+			PageInfo page = new PageInfo()
+			{
+				Page = 1,
+				PageSize = 5
+			};
+
+            var result = service.GetPriceByProduct(page);
+            Assert.NotNull(result);
+		}
     }
 }

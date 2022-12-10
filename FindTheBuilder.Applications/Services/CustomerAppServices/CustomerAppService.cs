@@ -22,18 +22,25 @@ namespace FindTheBuilder.Applications.Services.CustomerAppServices
 		}
 		public bool Create(CustomerDTO model)
 		{
-			var customer = _mapper.Map<Customers>(model);
-			_context.Customers.Add(customer);
-			_context.SaveChanges();
+			try
+			{
+				var customer = _mapper.Map<Customers>(model);
+				_context.Customers.Add(customer);
+				_context.SaveChanges();
 
-			return true;
+				return true;
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
 		}
 
 		public Customers GetByName(string name)
 		{
 			var customer = new Customers();
 			var cust = _context.Customers.AsNoTracking().FirstOrDefault(w => w.Name == name);
-			if(cust == null)
+			if (cust == null)
 			{
 				return customer;
 			}
@@ -42,18 +49,25 @@ namespace FindTheBuilder.Applications.Services.CustomerAppServices
 
 		public bool Update(UpdateCustomerDTO model)
 		{
-			var cust = GetByName(model.Name);
-
-			if(cust.Id != 0)
+			try
 			{
-				var customer = _mapper.Map<Customers>(model);
-				customer.Id = cust.Id;
-				_context.Customers.Update(customer);
-				_context.SaveChanges();
+				var cust = GetByName(model.Name);
 
-				return true;
+				if (cust.Id != 0)
+				{
+					var customer = _mapper.Map<Customers>(model);
+					customer.Id = cust.Id;
+					_context.Customers.Update(customer);
+					_context.SaveChanges();
+
+					return true;
+				}
+				return false;
 			}
-			return false;
+			catch (Exception ex)
+			{
+				return false;
+			}
 		}
 
 		public Customers GetById(int id)

@@ -30,9 +30,9 @@ namespace FindTheBuilder.Controllers
 			_tukangAppService = tukangAppService;
 		}
 
-		[HttpGet("login")]
+		[HttpPost("login")]
 		[AllowAnonymous]
-		public IActionResult Login([FromQuery] AuthLoginDto model)
+		public IActionResult Login([FromBody] AuthLoginDto model)
 		{
 			try
 			{				

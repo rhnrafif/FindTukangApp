@@ -107,12 +107,17 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 				CustomerName = "Rafif",
 				PriceId = 1
 			};
+			Transactions trans = new Transactions()
+			{
+				Id = 1
+			};
 
 			//Act
+			_transactionAppService.Setup(w => w.Create(model)).Returns(trans);
 			var result = _customerController.CreateTransaction(model) as ObjectResult;
 
 			//Assert
-			Assert.NotNull(result);			
+			Assert.Equal(200, result.StatusCode);			
 		}
 
 		[Fact]
@@ -194,7 +199,7 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 			CreateTransactionDetailDTO model = new CreateTransactionDetailDTO()
 			{
 				BuildingDay = 2,
-				ProductName = "ahshs" ,
+				PriceId = 1 ,
 				TransactionId = 1
 			};
 			TransactionDetails mod = new TransactionDetails()

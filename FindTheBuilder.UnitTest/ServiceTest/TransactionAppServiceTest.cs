@@ -58,7 +58,7 @@ namespace FindTheBuilder.UnitTest.ServiceTest
             var result = service.UpdatePayment(id);
             Assert.NotNull(result);
         }
-        
+
         [Fact]
         public void GetActiveTransactionByName()
         {

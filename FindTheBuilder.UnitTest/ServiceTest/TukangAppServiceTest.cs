@@ -26,7 +26,6 @@ namespace FindTheBuilder.UnitTest.ServiceTest
             TukangDTO tukang = new TukangDTO()
             {
                 Name = "Test",
-                SkillId = 1,
             };
 
             var result = service.Create(tukang);

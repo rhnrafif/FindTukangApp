@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace FindTheBuilder.UnitTest.ServiceTest
 {
-	public class TransactionDetailAppServiceTest: IClassFixture<Startup>
+	public class TransactionDetailAppServiceTest : IClassFixture<Startup>
 	{
 		private ServiceProvider _serviceProvider;
 		public TransactionDetailAppServiceTest(Startup fixtur)

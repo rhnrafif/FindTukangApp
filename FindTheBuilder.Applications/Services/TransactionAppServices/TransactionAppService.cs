@@ -50,7 +50,7 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 					_contex.Transactions.Add(dataTrans);
 					_contex.SaveChanges();
 
-					return dataTrans = trans;
+					return dataTrans;
 				}
 				return dataTrans;
 			}
@@ -62,28 +62,18 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 
 		public Transactions Update(UpdateTransactionDTO model)
 		{
-			try
-			{
-				var dataTrans = new Transactions();
+			var transData = _contex.Transactions.AsNoTracking().FirstOrDefault(w => w.Id == model.Id);
+			var custData = _customerAppService.GetByName(model.CustomerName);
 
-				var custData = _customerAppService.GetByName(model.CustomerName);
+			if(transData != null)
+			{
 				var trans = _mapper.Map<Transactions>(model);
+				trans.CustomerId = custData.Id;
+				trans.TransactionDate = transData.TransactionDate;
+				_contex.Transactions.Update(trans);
+				_contex.SaveChanges();
 
-				if (custData.Id != 0 && trans.PriceId != 0)
-				{
-					dataTrans.CustomerId = custData.Id;
-					dataTrans.PriceId = trans.PriceId;
-
-					_contex.Transactions.Update(dataTrans);
-					_contex.SaveChanges();
-
-					return dataTrans = trans;
-				}
-				return dataTrans;
-			}
-			catch
-			{
-				return new Transactions() { CustomerId = 0 };
+				return trans;
 			}
 		}
 

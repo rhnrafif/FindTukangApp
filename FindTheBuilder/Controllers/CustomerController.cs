@@ -37,12 +37,12 @@ namespace FindTheBuilder.Controllers
 
 		// Customer
 		[HttpPost("CreateCustomer")]
-		//[Authorize(Roles = "Customer")]
+		[Authorize(Roles = "Customer")]
 		public IActionResult CreateCustomer([FromBody] CustomerDTO model)
 		{
 			try
 			{
-				if(model.Name != null)
+				if(model.Name != "")
 				{
 					var isAdded = _customerAppService.Create(model);
 					if (isAdded)
@@ -61,7 +61,7 @@ namespace FindTheBuilder.Controllers
 		}
 		
 		[HttpPatch("UpdateCustomer")]
-		//[Authorize(Roles = "Customer")]
+		[Authorize(Roles = "Customer")]
 		public IActionResult UpdateCustomer([FromBody] UpdateCustomerDTO model)
 		{
 			try
@@ -85,7 +85,7 @@ namespace FindTheBuilder.Controllers
 
 		// Transaction
 		[HttpPost("CreateTransaction")]
-		//[Authorize(Roles = "Customer")]
+		[Authorize(Roles = "Customer")]
 		public IActionResult CreateTransaction([FromBody] TransactionDTO model)
 		{
 			try
@@ -93,7 +93,7 @@ namespace FindTheBuilder.Controllers
 				if (model != null)
 				{
 					var res = _transactionAppService.Create(model);
-					if(res != null)
+					if(res.Id != 0)
 					{
 						return Requests.Response(this, new ApiStatus(200), null, "Success");
 					}
@@ -108,7 +108,7 @@ namespace FindTheBuilder.Controllers
 		}
 
 		[HttpPatch("UpdateTransaction")]
-		//[Authorize(Roles = "Customer")]
+		[Authorize(Roles = "Customer")]
 		public IActionResult UpdateTransaction([FromBody] UpdateTransactionDTO model)
 		{
 			try
@@ -132,7 +132,7 @@ namespace FindTheBuilder.Controllers
 
 		// Transaction Detail
 		[HttpGet("GetAllTransactionDetails")]
-		//Authorize(Roles = "Customer")]
+		[Authorize(Roles = "Customer")]
 		public IActionResult GetAllTransaction([FromQuery] PageInfo pageInfo)
 		{
 			try
@@ -152,7 +152,7 @@ namespace FindTheBuilder.Controllers
 
 
 		[HttpGet("GetActiveTransaction")]
-		//[Authorize(Roles = "Customer")]
+		[Authorize(Roles = "Customer")]
 		public IActionResult GetActiveTransactionByName(string name)
 		{
 			try
@@ -172,7 +172,7 @@ namespace FindTheBuilder.Controllers
 
 		//TransactionDetail
 		[HttpPost("create-detail-transaction")]
-		//[Authorize(Roles = "Customer")]
+		[Authorize(Roles = "Customer")]
 		public IActionResult CreateTransDetail([FromBody] CreateTransactionDetailDTO model)
 		{
 			try

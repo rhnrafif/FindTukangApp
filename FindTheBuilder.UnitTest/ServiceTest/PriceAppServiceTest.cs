@@ -74,14 +74,14 @@ namespace FindTheBuilder.UnitTest.ServiceTest
         {
             var service = _serviceProvider.GetService<IPriceAppService>();
 
-			PageInfo page = new PageInfo()
-			{
-				Page = 1,
-				PageSize = 5
-			};
+            PageInfo page = new PageInfo()
+            {
+                Page = 1,
+                PageSize = 5
+            };
 
             var result = service.GetPriceByProduct(page);
             Assert.NotNull(result);
-		}
+        }
     }
 }

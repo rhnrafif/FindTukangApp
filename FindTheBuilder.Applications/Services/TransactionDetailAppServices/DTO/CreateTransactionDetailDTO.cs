@@ -9,7 +9,7 @@ namespace FindTheBuilder.Applications.Services.TransactionDetailAppServices.DTO
 	public class CreateTransactionDetailDTO
 	{
 		public int TransactionId { get; set; }
-		public string ProductName { get; set; }
+		public int PriceId { get; set; }
 		public int BuildingDay { get; set; }
 	}
 }

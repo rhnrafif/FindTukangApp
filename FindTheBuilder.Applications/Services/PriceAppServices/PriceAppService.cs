@@ -57,32 +57,6 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 			return price;
 		}
 
-		public PagedResult<PriceListDTO> GetPriceByProduct(PageInfo pageInfo)
-		{
-			var pagedResult = new PagedResult<PriceListDTO>
-			{
-				Data = (from tukang in _context.Tukang
-						join price in _context.Prices
-						on tukang.Id equals price.TukangId
-						join skill in _context.Skills
-						on price.SkillId equals skill.Id
-						select new PriceListDTO
-						{
-							TukangName = tukang.Name,
-							TukangSkill = skill.Name,
-							TukangProducts = price.Product,
-							Size = price.Size,
-							Price = price.Price
-						}).Where(w => w.IsDeleted == false)
-						.Skip(pageInfo.Skip)
-						.Take(pageInfo.PageSize)
-						.OrderBy(w => w.TukangSkill),
-				Total = _context.Prices.Count()
-			};
-
-			return pagedResult;
-		}
-
 		public Prices Update(UpdatePriceDTO model)
 		{
 			var getPrice = GetByProduct(model.Product);

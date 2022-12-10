@@ -32,7 +32,7 @@ namespace FindTheBuilder.Applications.Services.TransactionDetailAppServices
 				var result = new TransactionDetails();
 
 				//get price
-				var price = _priceAppService.GetByProduct(model.ProductName);
+				var price = _priceAppService.GetPriceById(model.PriceId);
 
 				if (price.Price != null)
 				{

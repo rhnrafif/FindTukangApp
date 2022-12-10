@@ -129,11 +129,8 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 					foreach (var d in trans)
 					{
 						var customer = _customerAppService.GetById(d.CustomerId);
-						var price = _priceAppService.GetPriceById(d.PriceId);
 
 						d.Customer = customer;
-						d.Price = price;
-						d.Price.Transactions = null;
 
 						transaction.Add(d);
 					}

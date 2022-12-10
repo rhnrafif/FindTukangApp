@@ -25,11 +25,11 @@ namespace FindTheBuilder.Applications.Services.TransactionDetailAppServices
 			_priceAppService = priceAppService;
 		}
 
-		public TransactionDetailDTO CreateTransactionDetail(CreateTransactionDetailDTO model)
+		public TransactionDetails CreateTransactionDetail(CreateTransactionDetailDTO model)
 		{
 			try
 			{
-				var result = new TransactionDetailDTO();
+				var result = new TransactionDetails();
 
 				//get price
 				var price = _priceAppService.GetByProduct(model.ProductName);
@@ -46,7 +46,7 @@ namespace FindTheBuilder.Applications.Services.TransactionDetailAppServices
 					_context.SaveChanges();
 					_context.Database.CommitTransaction();
 
-					return result = _mapper.Map<TransactionDetailDTO>(data);
+					return result = _mapper.Map<TransactionDetails>(data);
 				}
 
 				return result;
@@ -54,7 +54,7 @@ namespace FindTheBuilder.Applications.Services.TransactionDetailAppServices
 			catch
 			{
 				_context.Database.RollbackTransaction();
-				return new TransactionDetailDTO();
+				return new TransactionDetails();
 			}
 		}
 

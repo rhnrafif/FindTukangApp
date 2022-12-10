@@ -9,6 +9,5 @@ namespace FindTheBuilder.Applications.Services.TukangAppServices.DTO
 	public class TukangDTO
 	{
 		public string Name { get; set; }
-		public int SkillId { get; set; }
 	}
 }

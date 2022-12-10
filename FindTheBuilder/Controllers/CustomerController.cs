@@ -198,8 +198,8 @@ namespace FindTheBuilder.Controllers
 		{
 			try
 			{
-				var data = _priceAppService.GetPriceByProduct(pageInfo);
-				if (data.Data.Count() == 0)
+				var data = _priceAppService.GetAllPrice(pageInfo);
+				if (data.Total == 0)
 				{
 					return Requests.Response(this, new ApiStatus(404), null, "No Price List");
 				}

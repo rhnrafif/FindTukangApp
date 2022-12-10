@@ -24,7 +24,7 @@ namespace FindTheBuilder.Controllers
 		{
 			try
 			{
-				var trans = "";
+				var trans = _transactionAppService.UpdatePayment(idTrans);
 				var res = await _paymentAppService.Post();
 				if(res == null)
 				{

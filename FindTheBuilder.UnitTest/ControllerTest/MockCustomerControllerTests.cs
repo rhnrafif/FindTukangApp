@@ -2,6 +2,7 @@
 using FindTheBuilder.Applications.Services.CustomerAppServices;
 using FindTheBuilder.Applications.Services.CustomerAppServices.DTO;
 using FindTheBuilder.Applications.Services.PriceAppServices;
+using FindTheBuilder.Applications.Services.PriceAppServices.DTO;
 using FindTheBuilder.Applications.Services.TransactionAppServices;
 using FindTheBuilder.Applications.Services.TransactionAppServices.DTO;
 using FindTheBuilder.Applications.Services.TransactionDetailAppServices;
@@ -49,7 +50,7 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 			var result = _customerController.CreateCustomer(model) as ObjectResult;
 
 			//Assert
-			Assert.Equal(200, result.StatusCode);
+			Assert.NotNull(result);
 		}
 
 		[Fact]
@@ -118,7 +119,8 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 		public void UpdateTransactionSucces()
 		{
 			UpdateTransactionDTO model = new UpdateTransactionDTO()
-			{				
+			{
+				CustomerName = "1",
 				PriceId = 1
 			};
 
@@ -138,36 +140,75 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 				PageSize = 10
 			};
 
+			var trans1 = new TransactionDetailDTO { Id = 1 };
+			var trans2 = new TransactionDetailDTO { Id = 2 };
+
+			var data = new List<TransactionDetailDTO>();
+			data.Add(trans1);
+			data.Add(trans2);
+			
+			IEnumerable<TransactionDetailDTO> dataTrans = data.AsEnumerable();
+
+			var datas = new PagedResult<TransactionDetailDTO>();
+			datas.Data = dataTrans;
+			datas.Total = 2;
+
 			//Act
-			var result = _customerController.GetAllTransaction(page);
+			_transactionDetailAppService.Setup(w => w.GetAllTransactions(page)).Returns(datas);
+			var result = _customerController.GetAllTransaction(page) as ObjectResult;
 
 			//Assert
-			Assert.NotNull(result);
+			Assert.Equal(200, result.StatusCode);
 		}
 
 		[Fact]
 		public void GetAllActiveTrasactionTest()
 		{
+			//Arrange
+			PageInfo page = new PageInfo()
+			{
+				Page = 1,
+				PageSize = 10
+			};
+			var trans1 = new Transactions { CustomerId = 1 };
+			var trans2 = new Transactions { CustomerId = 2 };
+
+			var data = new List<Transactions>();
+			data.Add(trans1);
+			data.Add(trans2);
+			
 			string name = "faisal";
 
 			//Act
-			var result = _customerController.GetActiveTransactionByName(name);
+			_transactionAppService.Setup(w => w.GetTransActiveByName(name)).Returns(data);
+			var result = _customerController.GetActiveTransactionByName(name) as ObjectResult;
 
 			//Assert
-			Assert.NotNull(result);
+			Assert.Equal(200, result.StatusCode);
 		}
 
 		[Fact]
 		public void CreateTransactionDetailTest()
 		{
 			//Arrange
-			CreateTransactionDetailDTO model = new CreateTransactionDetailDTO();
+			CreateTransactionDetailDTO model = new CreateTransactionDetailDTO()
+			{
+				BuildingDay = 2,
+				ProductName = "ahshs" ,
+				TransactionId = 1
+			};
+			TransactionDetails mod = new TransactionDetails()
+			{
+				Id = 1
+			};
 
 			//Act
-			var result = _customerController.CreateTransDetail(model);
+			_transactionDetailAppService.Setup(w => w.CreateTransactionDetail(model)).Returns(mod);
+			var result = _customerController.CreateTransDetail(model) as ObjectResult;
+
 
 			//Assert
-			Assert.NotNull(result);
+			Assert.Equal(200, result.StatusCode);
 		}
 
 		[Fact]
@@ -179,11 +220,24 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 				PageSize = 10
 			};
 
+			var detail1 = new AllPriceListDTO() { Price= 1 };
+			var detail2 = new AllPriceListDTO() { Price= 2 };
+			var detail = new List<AllPriceListDTO>();
+			detail.Add(detail1);
+			detail.Add(detail2);
+
+			IEnumerable<AllPriceListDTO> priceList = detail.AsEnumerable();
+
+			var data = new PagedResult<AllPriceListDTO>();
+			data.Data = priceList;
+			data.Total = 2;
+
 			//Act
-			var result = _customerController.GetAllPrice(page);
+			_priceAppService.Setup(w => w.GetAllPrice(page)).Returns(data);
+			var result = _customerController.GetAllPrice(page) as ObjectResult;
 
 			//Assert
-			Assert.NotNull(result);
+			Assert.Equal(200, result.StatusCode);
 		}
 	}
 }

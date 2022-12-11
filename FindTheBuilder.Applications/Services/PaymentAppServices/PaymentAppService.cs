@@ -21,8 +21,8 @@ namespace FindTheBuilder.Applications.Services.PaymentAppServices
 
 		public async Task<object> Post()
 		{
-			string startDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffff");
-			string endDate = DateTime.Now.AddMinutes(10).ToString("yyyy-MM-ddTHH:mm:ss.fffffff");
+			string startDate = DateTime.Now.AddDays(-3).ToString("yyyy-MM-ddT00:00:00-0700");
+			string endDate = DateTime.Now.ToString("yyyy-MM-ddT23:59:59-0700");
 
 			const SecurityProtocolType tls13 = (SecurityProtocolType)12288;
 			ServicePointManager.SecurityProtocol = tls13 | SecurityProtocolType.Tls12;

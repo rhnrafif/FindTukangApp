@@ -80,7 +80,8 @@ namespace FindTheBuilder.UnitTest.ServiceTest
                 PageSize = 5
             };
 
-            var result = service.GetPriceByProduct(page);
+            //var result = service.GetPriceByProduct(page);
+            var result = service.GetAllPrice(page);
             Assert.NotNull(result);
         }
     }

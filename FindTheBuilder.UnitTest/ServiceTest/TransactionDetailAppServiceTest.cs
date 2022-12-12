@@ -44,10 +44,12 @@ namespace FindTheBuilder.UnitTest.ServiceTest
 			{
 				Id = 1
 			};
+			Task<Prices> priceResult = Task.Run(() => (prices));
+			Task<TransactionDetails> transDetail = Task.Run(() => (transactionDetails));
 
 			//Act
-			var getRes = priceService.Setup(w => w.GetPriceById(trans.PriceId)).Returns(prices);
-			var result = service.Setup(w => w.CreateTransactionDetail(trans)).Returns(transactionDetails);
+			var getRes = priceService.Setup(w => w.GetPriceById(trans.PriceId)).Returns(priceResult);
+			var result = service.Setup(w => w.CreateTransactionDetail(trans)).Returns(transDetail);
 
 			//Assert
 			Assert.NotNull(result);

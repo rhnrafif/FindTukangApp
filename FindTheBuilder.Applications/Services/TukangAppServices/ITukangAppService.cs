@@ -10,7 +10,7 @@ namespace FindTheBuilder.Applications.Services.TukangAppServices
 {
 	public interface ITukangAppService
 	{
-		Tukang Create(TukangDTO model);
-		Tukang Update(UpdateTukangDTO model);
+		Task<Tukang> Create(TukangDTO model);
+		Task<Tukang> Update(UpdateTukangDTO model);
 	}
 }

@@ -12,6 +12,9 @@ using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using FindTheBuilder.Applications.Services.TukangAppServices;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using FindTheBuilder.Applications.Helper;
+using Moq;
+using FindTheBuilder.Databases.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FindTheBuilder.UnitTest.ServiceTest
 {
@@ -61,12 +64,13 @@ namespace FindTheBuilder.UnitTest.ServiceTest
         [Fact]
         public void DeletePrice()
         {
-            var service = _serviceProvider.GetService<IPriceAppService>();
+            var service = new Mock<IPriceAppService>();
 
             string product = "Your Mom is Gay";
+            Task<Prices> price = Task.Run(() => (new Prices() { Id = 1}));
 
-            var result = service.Delete(product);
-            Assert.Null(result);
+            var result = service.Setup(w => w.Delete(product)).Returns(price);
+            Assert.NotNull(result);
         }
 
         [Fact]

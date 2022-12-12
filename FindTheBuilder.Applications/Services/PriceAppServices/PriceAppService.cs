@@ -23,69 +23,69 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 			_mapper = mapper;
 		}
 
-		public Prices Create(PriceDTO model)
+		public async Task<Prices> Create(PriceDTO model)
 		{
 			var price = _mapper.Map<Prices>(model);
 
 			price.IsDeleted = false;
-			_context.Prices.Add(price);
-			_context.SaveChanges();
+			await _context.Prices.AddAsync(price);
+			await _context.SaveChangesAsync();
 
-			return price;
+			return await Task.Run(()=>(price));
 		}
 
-		public Prices Delete(string product)
+		public  async Task<Prices> Delete(string product)
 		{
-			var price = _context.Prices.AsNoTracking().FirstOrDefault(x => x.Product == product);
+			var price = await _context.Prices.AsNoTracking().FirstOrDefaultAsync(x => x.Product == product);
 			if (price != null)
 			{
 				price.IsDeleted = true;
 				_context.Prices.Update(price);
-				_context.SaveChanges();
+				await _context.SaveChangesAsync();
 			}
 
-			return price;
+			return await Task.Run(()=>(price));
 		}
 
-		public Prices GetPriceById(int id)
+		public async Task<Prices> GetPriceById(int id)
 		{
-			var price = _context.Prices.FirstOrDefault(w => w.Id == id);
+			var price = await _context.Prices.FirstOrDefaultAsync(w => w.Id == id);
 			if (price != null)
 			{
-				return price;
+				return await Task.Run(() => (price));
 			}
-			return price;
+			return await Task.Run(() => (price));
 		}
 
-		public Prices Update(UpdatePriceDTO model)
+		public async Task<Prices> Update(UpdatePriceDTO model)
 		{
-			var getPrice = GetByProduct(model.Product);
+			var getPrice = await GetByProduct(model.Product);
 			if (getPrice.Id != 0)
 			{
 				var price = _mapper.Map<Prices>(model);
 				getPrice.IsDeleted = false;
 				_context.Prices.Update(price);
-				_context.SaveChanges();
+				await _context.SaveChangesAsync();
 
-				return price;
+				return await Task.Run(()=>(price));
 			}
 
-			return new Prices();
+			return await Task.Run(()=>(new Prices()));
 		}
 
-		public Prices GetByProduct(string product)
+		public async Task<Prices> GetByProduct(string product)
 		{
 			var price = new Prices();
-			var getPrice = _context.Prices.AsNoTracking().FirstOrDefault(x => x.Product == product);
+			var getPrice = await _context.Prices.AsNoTracking().FirstOrDefaultAsync(x => x.Product == product);
 			if (getPrice == null)
 			{
-				return price;
+				return await Task.Run(()=>(price));
 			}
 
-			return price = getPrice;
+			return await Task.Run(()=>(price = getPrice));
 		}
 
-		public PagedResult<AllPriceListDTO> GetAllPrice(PageInfo pageInfo)
+		public async Task<PagedResult<AllPriceListDTO>> GetAllPrice(PageInfo pageInfo)
 		{
 			var pagedResult = new PagedResult<AllPriceListDTO>
 			{
@@ -109,7 +109,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 				Total = _context.Prices.Where(w => w.IsDeleted == false).Count()
 			};
 
-			return pagedResult;
+			return await Task.Run(()=>(pagedResult));
 		}
 	}
 }

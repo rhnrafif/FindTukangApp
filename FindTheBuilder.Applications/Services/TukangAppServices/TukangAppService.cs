@@ -20,41 +20,41 @@ namespace FindTheBuilder.Applications.Services.TukangAppServices
 			_context= context;
 			_mapper= mapper;
 		}
-		public Tukang Create(TukangDTO model)
+		public async Task<Tukang> Create(TukangDTO model)
 		{
 			var tukang = _mapper.Map<Tukang>(model);
-			_context.Tukang.Add(tukang);
-			_context.SaveChanges();
+			await _context.Tukang.AddAsync(tukang);
+			await _context.SaveChangesAsync();
 
-			return tukang;
+			return await Task.Run(()=>(tukang));
 		}
 
-		public Tukang Update(UpdateTukangDTO model)
+		public async Task<Tukang> Update(UpdateTukangDTO model)
 		{
-			var getTukang = GetByName(model.Name);
+			var getTukang = await GetByName(model.Name);
 
 			if (getTukang.Id != 0) 
 			{
 				var tukang = _mapper.Map<Tukang>(model);
 				getTukang.Id = tukang.Id;
 				_context.Tukang.Update(tukang);
-				_context.SaveChanges();
+				await _context.SaveChangesAsync();
 
-				return tukang;
+				return await Task.Run(()=>(tukang));
 			}
 			
-			return new Tukang() { Name = null };
+			return await Task.Run(()=>(new Tukang() { Name = null }));
 		}
 
-		private Tukang GetByName (string name)
+		private async Task<Tukang> GetByName (string name)
 		{
 			var tukang = new Tukang();
-			var getTukang = _context.Tukang.AsNoTracking().FirstOrDefault(x => x.Name == name);
+			var getTukang = await _context.Tukang.AsNoTracking().FirstOrDefaultAsync(x => x.Name == name);
 			if (getTukang == null)
 			{
-				return tukang;
+				return await Task.Run(()=>(tukang));
 			}
-			return tukang = getTukang;
+			return await Task.Run(()=>(tukang = getTukang));
 		}
 	}
 }

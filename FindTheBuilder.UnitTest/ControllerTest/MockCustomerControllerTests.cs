@@ -10,6 +10,7 @@ using FindTheBuilder.Applications.Services.TransactionDetailAppServices.DTO;
 using FindTheBuilder.Controllers;
 using FindTheBuilder.Databases.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -45,22 +46,24 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 				Address = "Magelang",
 				Phone = "089897655677"
 			};
+			Task<bool> res = Task.Run(()=>(true));
 
 			//Act
-			var result = _customerController.CreateCustomer(model) as ObjectResult;
+			_customerAppService.Setup(w => w.Create(model)).Returns(res);
+			var result = _customerController.CreateCustomer(model).Result as ObjectResult;
 
 			//Assert
-			Assert.NotNull(result);
+			Assert.Equal(200, result.StatusCode);
 		}
 
 		[Fact]
 		public void CreateCustomerTestFailed()
 		{
 			//Arrange
-			CustomerDTO model = new CustomerDTO();
+			CustomerDTO model = new CustomerDTO() { Name = ""};
 
 			//Act
-			var result = _customerController.CreateCustomer(model) as ObjectResult;
+			var result = _customerController.CreateCustomer(model).Result as ObjectResult;
 
 			//Assert
 			Assert.Equal(400, result.StatusCode);
@@ -76,23 +79,25 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 				Address = "Magelang",
 				Phone = "089897655677"
 			};
+			Task<bool> res = Task.Run(() => (true));
 
 			//Act
-			var result = _customerController.UpdateCustomer(model) as ObjectResult;
+			_customerAppService.Setup(w => w.Update(model)).Returns(res);
+			var result = _customerController.UpdateCustomer(model).Result as ObjectResult;
 
 			//Assert
-			Assert.NotNull(result);
+			Assert.Equal(200, result.StatusCode);
 		}
 
 
 		[Fact]
 		public void UpdateCustomerTestNameFailed()
-		{			
+		{
 			//Arrange
-			UpdateCustomerDTO model = new UpdateCustomerDTO();			
+			UpdateCustomerDTO model = new UpdateCustomerDTO() { Name = ""};
 
 			//Act
-			var result = _customerController.UpdateCustomer(model) as ObjectResult;
+			var result = _customerController.UpdateCustomer(model).Result as ObjectResult;
 
 			//Assert
 			Assert.Equal(400, result.StatusCode);
@@ -107,17 +112,14 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 				CustomerName = "Rafif",
 				PriceId = 1
 			};
-			Transactions trans = new Transactions()
-			{
-				Id = 1
-			};
+			Task<Transactions> trans = Task.Run(()=>(new Transactions() { Id = 1}));
 
 			//Act
 			_transactionAppService.Setup(w => w.Create(model)).Returns(trans);
-			var result = _customerController.CreateTransaction(model) as ObjectResult;
+			var result = _customerController.CreateTransaction(model).Result as ObjectResult;
 
 			//Assert
-			Assert.Equal(200, result.StatusCode);			
+			Assert.Equal(200, result.StatusCode);
 		}
 
 		[Fact]
@@ -128,12 +130,14 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 				CustomerName = "1",
 				PriceId = 1
 			};
+			Task<Transactions> trans = Task.Run(()=>(new Transactions() { Id = 1 }));
 
 			//Act
-			var result = _customerController.UpdateTransaction(model) as ObjectResult;
+			_transactionAppService.Setup(w => w.Update(model)).Returns(trans);
+			var result = _customerController.UpdateTransaction(model).Result as ObjectResult;
 
 			//Assert
-			Assert.NotNull(result);
+			Assert.Equal(200, result.StatusCode);
 		}
 
 		[Fact]
@@ -146,21 +150,21 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 			};
 
 			var trans1 = new TransactionDetailDTO { Id = 1 };
-			var trans2 = new TransactionDetailDTO { Id = 2 };
+			var trans2 = new TransactionDetailDTO { Id = 9 };
 
 			var data = new List<TransactionDetailDTO>();
 			data.Add(trans1);
 			data.Add(trans2);
-			
+
 			IEnumerable<TransactionDetailDTO> dataTrans = data.AsEnumerable();
+			PagedResult<TransactionDetailDTO> transactionList = new PagedResult<TransactionDetailDTO>();
+			transactionList.Data = dataTrans;
 
-			var datas = new PagedResult<TransactionDetailDTO>();
-			datas.Data = dataTrans;
-			datas.Total = 2;
-
+			Task<PagedResult<TransactionDetailDTO>> transResult = Task.Run(()=>(transactionList));
+			
 			//Act
-			_transactionDetailAppService.Setup(w => w.GetAllTransactions(page)).Returns(datas);
-			var result = _customerController.GetAllTransaction(page) as ObjectResult;
+			_transactionDetailAppService.Setup(w => w.GetAllTransactions(page)).Returns(transResult);
+			var result = _customerController.GetAllTransaction(page).Result as ObjectResult;
 
 			//Assert
 			Assert.Equal(200, result.StatusCode);
@@ -178,15 +182,18 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 			var trans1 = new Transactions { CustomerId = 1 };
 			var trans2 = new Transactions { CustomerId = 2 };
 
-			var data = new List<Transactions>();
+			ICollection<Transactions> data = new List<Transactions>();
 			data.Add(trans1);
 			data.Add(trans2);
+
+			Task<ICollection<Transactions>> activeTrans = Task.Run(() => (data));
 			
+
 			string name = "faisal";
 
 			//Act
-			_transactionAppService.Setup(w => w.GetTransActiveByName(name)).Returns(data);
-			var result = _customerController.GetActiveTransactionByName(name) as ObjectResult;
+			_transactionAppService.Setup(w => w.GetTransActiveByName(name)).Returns(activeTrans);
+			var result = _customerController.GetActiveTransactionByName(name).Result as ObjectResult;
 
 			//Assert
 			Assert.Equal(200, result.StatusCode);
@@ -199,17 +206,14 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 			CreateTransactionDetailDTO model = new CreateTransactionDetailDTO()
 			{
 				BuildingDay = 2,
-				PriceId = 1 ,
+				PriceId = 1,
 				TransactionId = 1
 			};
-			TransactionDetails mod = new TransactionDetails()
-			{
-				Id = 1
-			};
+			Task<TransactionDetails> mod = Task.Run(() => (new TransactionDetails() { Id = 1}));
 
 			//Act
 			_transactionDetailAppService.Setup(w => w.CreateTransactionDetail(model)).Returns(mod);
-			var result = _customerController.CreateTransDetail(model) as ObjectResult;
+			var result = _customerController.CreateTransDetail(model).Result as ObjectResult;
 
 
 			//Assert
@@ -225,8 +229,8 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 				PageSize = 10
 			};
 
-			var detail1 = new AllPriceListDTO() { Price= 1 };
-			var detail2 = new AllPriceListDTO() { Price= 2 };
+			var detail1 = new AllPriceListDTO() { Price = 1 };
+			var detail2 = new AllPriceListDTO() { Price = 2 };
 			var detail = new List<AllPriceListDTO>();
 			detail.Add(detail1);
 			detail.Add(detail2);
@@ -237,9 +241,11 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 			data.Data = priceList;
 			data.Total = 2;
 
+			Task<PagedResult<AllPriceListDTO>> priceResult = Task.Run(() => (data));
+
 			//Act
-			_priceAppService.Setup(w => w.GetAllPrice(page)).Returns(data);
-			var result = _customerController.GetAllPrice(page) as ObjectResult;
+			_priceAppService.Setup(w => w.GetAllPrice(page)).Returns(priceResult);
+			var result = _customerController.GetAllPrice(page).Result as ObjectResult;
 
 			//Assert
 			Assert.Equal(200, result.StatusCode);

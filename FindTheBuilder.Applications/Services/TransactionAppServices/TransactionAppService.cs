@@ -29,13 +29,13 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 			_priceAppService = priceAppService;
 		}
 
-		public Transactions Create(TransactionDTO model)
+		public async Task<Transactions> Create(TransactionDTO model)
 		{
 			try
 			{
 				var dataTrans = new Transactions();
 
-				var custData = _customerAppService.GetByName(model.CustomerName);
+				var custData = await _customerAppService.GetByName(model.CustomerName);
 				var transDate = DateTime.Now;
 				var paymentStat = false;
 				var trans = _mapper.Map<Transactions>(model);
@@ -47,23 +47,23 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 					dataTrans.TransactionDate = transDate;
 					dataTrans.PaymentStatus = paymentStat;
 
-					_contex.Transactions.Add(dataTrans);
-					_contex.SaveChanges();
+					await _contex.Transactions.AddAsync(dataTrans);
+					await _contex.SaveChangesAsync();
 
-					return dataTrans;
+					return await Task.Run(()=>(dataTrans));
 				}
-				return dataTrans;
+				return await Task.Run(()=>(dataTrans));
 			}
 			catch
 			{
-				return new Transactions() { CustomerId = 0 };
+				return await Task.Run(()=>(new Transactions() { CustomerId = 0 }));
 			}			
 		}
 
-		public Transactions Update(UpdateTransactionDTO model)
+		public async Task<Transactions> Update(UpdateTransactionDTO model)
 		{
-			var transData = _contex.Transactions.AsNoTracking().FirstOrDefault(w => w.Id == model.Id);
-			var custData = _customerAppService.GetByName(model.CustomerName);
+			var transData = await _contex.Transactions.AsNoTracking().FirstOrDefaultAsync(w => w.Id == model.Id);
+			var custData = await _customerAppService.GetByName(model.CustomerName);
 
 			if(transData != null)
 			{
@@ -71,19 +71,19 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 				trans.CustomerId = custData.Id;
 				trans.TransactionDate = transData.TransactionDate;
 				_contex.Transactions.Update(trans);
-				_contex.SaveChanges();
+				await _contex.SaveChangesAsync();
 
-				return trans;
+				return await Task.Run(()=>(trans));
 			}
-			return transData;
+			return await Task.Run(()=>(transData));
 		}
 
-		public Transactions UpdatePayment(int transId)
+		public async Task<Transactions> UpdatePayment(int transId)
 		{
 			var transaction = new Transactions();
 			try
 			{
-				var transData = _contex.Transactions.AsNoTracking().FirstOrDefault(w => w.Id == transId);
+				var transData = await _contex.Transactions.AsNoTracking().FirstOrDefaultAsync(w => w.Id == transId);
 
 				if (transData.Id != 0)
 				{
@@ -91,47 +91,47 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 					trans.PaymentStatus = true;
 
 					_contex.Transactions.Update(trans);
-					_contex.SaveChanges();
+					await _contex.SaveChangesAsync();
 
-					return transaction = trans;
+					return await Task.Run(()=>(transaction = trans));
 				}
-				return transaction;
+				return await Task.Run(() => (transaction));
 			}
 			catch
 			{
-				return transaction;
+				return await Task.Run(() => (transaction));
 			}
 		}
 
-		public ICollection<Transactions> GetTransActiveByName(string name)
+		public async Task<ICollection<Transactions>> GetTransActiveByName(string name)
 		{
 			ICollection<Transactions> transaction = new Collection<Transactions>();
 			try
 			{
-				var customerData = _customerAppService.GetByName(name);
+				var customerData = await _customerAppService.GetByName(name);
 				if (customerData.Name == null)
 				{
-					return transaction;
+					return await Task.Run(()=>(transaction));
 				}
 
-				var trans = _contex.Transactions.Where(w => w.Customer.Id == customerData.Id).Where(w => w.PaymentStatus == false).ToList();
+				var trans = await _contex.Transactions.Where(w => w.Customer.Id == customerData.Id).Where(w => w.PaymentStatus == false).ToListAsync();
 				if (trans.Count() != 0)
 				{
 					foreach (var d in trans)
 					{
-						var customer = _customerAppService.GetById(d.CustomerId);
+						var customer = await _customerAppService.GetById(d.CustomerId);
 
 						d.Customer = customer;
 
 						transaction.Add(d);
 					}
-					return transaction;
+					return await Task.Run(()=>(transaction));
 				}
-				return transaction;
+				return await Task.Run(()=>(transaction));
 			}
 			catch
 			{
-				return transaction;
+				return await Task.Run(() => (transaction));
 			}
 		}
 	}

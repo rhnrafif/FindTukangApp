@@ -25,14 +25,14 @@ namespace FindTheBuilder.Applications.Services.TransactionDetailAppServices
 			_priceAppService = priceAppService;
 		}
 
-		public TransactionDetails CreateTransactionDetail(CreateTransactionDetailDTO model)
+		public async Task<TransactionDetails> CreateTransactionDetail(CreateTransactionDetailDTO model)
 		{
 			try
 			{
 				var result = new TransactionDetails();
 
 				//get price
-				var price = _priceAppService.GetPriceById(model.PriceId);
+				var price = await _priceAppService.GetPriceById(model.PriceId);
 
 				if (price.Price != null)
 				{
@@ -41,24 +41,24 @@ namespace FindTheBuilder.Applications.Services.TransactionDetailAppServices
 					data.DueDate = DateTime.Now.AddDays(model.BuildingDay);
 					data.Total = price.Price;
 
-					_context.Database.BeginTransaction();
-					_context.TransactionDetails.Add(data);
-					_context.SaveChanges();
-					_context.Database.CommitTransaction();
+					await _context.Database.BeginTransactionAsync();
+					await _context.TransactionDetails.AddAsync(data);
+					await _context.SaveChangesAsync();
+					await _context.Database.CommitTransactionAsync();
 
-					return result = _mapper.Map<TransactionDetails>(data);
+					return await Task.Run(()=>(result = _mapper.Map<TransactionDetails>(data)));
 				}
 
-				return result;
+				return await Task.Run(()=>(result));
 			}
 			catch
 			{
-				_context.Database.RollbackTransaction();
-				return new TransactionDetails();
+				await _context.Database.RollbackTransactionAsync();
+				return await Task.Run(()=>( new TransactionDetails()));
 			}
 		}
 
-		public PagedResult<TransactionDetailDTO> GetAllTransactions(PageInfo pageInfo)
+		public async Task<PagedResult<TransactionDetailDTO>> GetAllTransactions(PageInfo pageInfo)
 		{
 			var result = new PagedResult<TransactionDetailDTO>
 			{
@@ -75,7 +75,7 @@ namespace FindTheBuilder.Applications.Services.TransactionDetailAppServices
 				Total = _context.TransactionDetails.Count()
 			};
 
-			return result;
+			return await Task.Run(() => (result));
 		}
 	}
 }

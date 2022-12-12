@@ -3,6 +3,7 @@ using BCrypt.Net;
 using FindTheBuilder.Applications.Services.AuthAppServices.Dto;
 using FindTheBuilder.Databases;
 using FindTheBuilder.Databases.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace FindTheBuilder.Applications.Services.AuthAppServices
 			_mapper = mapper;
 		}
 
-		public AuthDto Register(AuthDto model)
+		public async Task<AuthDto> Register(AuthDto model)
 		{
 			try
 			{
@@ -32,36 +33,36 @@ namespace FindTheBuilder.Applications.Services.AuthAppServices
 
 				var userData = _mapper.Map<Auth>(model);
 
-				_context.Database.BeginTransaction();
-				_context.auths.Add(userData);
-				_context.SaveChanges();
-				_context.Database.CommitTransaction();
+				await _context.Database.BeginTransactionAsync();
+				await _context.auths.AddAsync(userData);
+				await _context.SaveChangesAsync();
+				await _context.Database.CommitTransactionAsync();
 
 				if(userData != null)
 				{
-					return result = _mapper.Map<AuthDto>(userData);
+					return await Task.Run(() => (result = _mapper.Map<AuthDto>(userData)));
 				}
 				
-				return result;
+				return await Task.Run(() => (result));
 								
 			}
 			catch
 			{				
-				_context.Database.RollbackTransaction();
-				return new AuthDto() { Name = null, Password = null, Role = 0};
+				await _context.Database.RollbackTransactionAsync();
+				return await Task.Run(() => (new AuthDto() { Name = null, Password = null, Role = 0}));
 			}
 		}
 
-		public AuthDto Login(AuthLoginDto model)
+		public async Task<AuthDto> Login(AuthLoginDto model)
 		{
 			try
 			{
 				var result = new AuthDto();
-				var user = _context.auths.FirstOrDefault(w => w.Name == model.Name);
+				var user = await _context.auths.FirstOrDefaultAsync(w => w.Name == model.Name);
 
 				if(user == null)
 				{
-					return result;
+					return await Task.Run(()=>(result));
 				}			
 
 				//DeCrypt
@@ -69,18 +70,18 @@ namespace FindTheBuilder.Applications.Services.AuthAppServices
 
 				if (user != null && isValidPassword)
 				{	
-					return result = _mapper.Map<AuthDto>(user);
+					return await Task.Run(()=>(result = _mapper.Map<AuthDto>(user)));
 				}
 
-				return result;
+				return await Task.Run(() => (result));
 			}
 			catch
 			{
-				return new AuthDto() { Name = null, Password = null, Role = 0 };
+				return await Task.Run(() => (new AuthDto() { Name = null, Password = null, Role = 0 }));
 			}
 		}
 
-		public AuthDto AutenticateUser(AuthDto model)
+		public async Task<AuthDto> AutenticateUser(AuthDto model)
 		{
 			AuthDto user = null;
 
@@ -89,7 +90,7 @@ namespace FindTheBuilder.Applications.Services.AuthAppServices
 				user = new AuthDto { Name = model.Name, Password = model.Password, Role = model.Role };
 			}
 
-			return user;
+			return await Task.Run(()=>(user));
 		}
 
 	}

@@ -20,65 +20,65 @@ namespace FindTheBuilder.Applications.Services.CustomerAppServices
 			_context = context;
 			_mapper = mapper;
 		}
-		public bool Create(CustomerDTO model)
+		public async Task<bool> Create(CustomerDTO model)
 		{
 			try
 			{
 				var customer = _mapper.Map<Customers>(model);
-				_context.Customers.Add(customer);
-				_context.SaveChanges();
+				await _context.Customers.AddAsync(customer);
+				await _context.SaveChangesAsync();
 
-				return true;
+				return await Task.Run(() => (true));
 			}
 			catch (Exception ex)
 			{
-				return false;
+				return await Task.Run(() => (false));
 			}
 		}
 
-		public Customers GetByName(string name)
+		public async Task<Customers> GetByName(string name)
 		{
 			var customer = new Customers();
-			var cust = _context.Customers.AsNoTracking().FirstOrDefault(w => w.Name == name);
+			var cust = await _context.Customers.AsNoTracking().FirstOrDefaultAsync(w => w.Name == name);
 			if (cust == null)
 			{
-				return customer;
+				return await Task.Run(() => (customer));
 			}
-			return customer = cust;
+			return await Task.Run(() => (customer = cust));
 		}
 
-		public bool Update(UpdateCustomerDTO model)
+		public async Task<bool> Update(UpdateCustomerDTO model)
 		{
 			try
 			{
-				var cust = GetByName(model.Name);
+				var cust = await GetByName(model.Name);
 
 				if (cust.Id != 0)
 				{
 					var customer = _mapper.Map<Customers>(model);
 					customer.Id = cust.Id;
 					_context.Customers.Update(customer);
-					_context.SaveChanges();
+					await _context.SaveChangesAsync();
 
-					return true;
+					return await Task.Run(() => (true));
 				}
-				return false;
+				return await Task.Run(() => (false));
 			}
 			catch (Exception ex)
 			{
-				return false;
+				return await Task.Run(() => (false));
 			}
 		}
 
-		public Customers GetById(int id)
+		public async Task<Customers> GetById(int id)
 		{
 			var customer = new Customers();
-			var cust = _context.Customers.AsNoTracking().FirstOrDefault(w => w.Id == id);
+			var cust = await _context.Customers.AsNoTracking().FirstOrDefaultAsync(w => w.Id == id);
 			if (cust == null)
 			{
-				return customer;
+				return await Task.Run(() => (customer));
 			}
-			return customer = cust;
+			return await Task.Run(() => (customer = cust));
 		}
 	}
 }

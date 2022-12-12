@@ -29,117 +29,117 @@ namespace FindTheBuilder.Controllers
 		// Tukang
 		[HttpPost("CreateTukang")]
 		[Authorize(Roles = "Tukang")]
-		public IActionResult CreateTukang([FromBody] TukangDTO model)
+		public async Task<IActionResult> CreateTukang([FromBody] TukangDTO model)
 		{
 			try
 			{
 				if (model != null)
 				{
-					var res = _tukangAppService.Create(model);
+					var res = await _tukangAppService.Create(model);
 					if (res != null)
 					{
-						return Requests.Response(this, new ApiStatus(200), null, "Success");
+						return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), null, "Success")));
 					}
-					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "Data Not Found")));
 				}
-				return Requests.Response(this, new ApiStatus(400), null, "Error");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(400), null, "Error")));
 			}
 			catch (DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}			
 		}
 		
 		[HttpPatch("EditTukang")]
 		[Authorize(Roles = "Tukang")]
-		public IActionResult EditTukang([FromBody] UpdateTukangDTO model)		
+		public async Task<IActionResult> EditTukang([FromBody] UpdateTukangDTO model)		
 		{
 			try
 			{
 				if (model != null)
 				{
-					var res = _tukangAppService.Update(model);
+					var res = await _tukangAppService.Update(model);
 					if (res != null)
 					{
-						return Requests.Response(this, new ApiStatus(200), null, "Success");
+						return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), null, "Success")));
 					}
-					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "Data Not Found")));
 				}
-				return Requests.Response(this, new ApiStatus(400), null, "Error");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(400), null, "Error")));
 			}
 			catch (DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}
 		}
 
 		// Prices
 		[HttpPost("CreatePricing")]
 		[Authorize(Roles = "Tukang")]
-		public IActionResult CreatePricing([FromBody] PriceDTO model)
+		public async Task<IActionResult> CreatePricing([FromBody] PriceDTO model)
 		{
 			try
 			{
 				if (model != null)
 				{
-					var res = _priceAppService.Create(model);
+					var res = await _priceAppService.Create(model);
 					if (res != null)
 					{
-						return Requests.Response(this, new ApiStatus(200), null, "Success");
+						return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), null, "Success")));
 					}
-					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "Data Not Found")));
 				}
-				return Requests.Response(this, new ApiStatus(400), null, "Error");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(400), null, "Error")));
 			}
 			catch (DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}
 		}
 
 		[HttpPatch("EditPricing")]
 		[Authorize(Roles = "Tukang")]
-		public IActionResult EditPricing([FromBody] UpdatePriceDTO model)
+		public async Task<IActionResult> EditPricing([FromBody] UpdatePriceDTO model)
 		{
 			try
 			{
 				if (model != null)
 				{
-					var res = _priceAppService.Update(model);
+					var res = await _priceAppService.Update(model);
 					if (res != null)
 					{
-						return Requests.Response(this, new ApiStatus(200), null, "Success");
+						return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), null, "Success")));
 					}
-					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "Data Not Found")));
 				}
-				return Requests.Response(this, new ApiStatus(400), null, "Error");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(400), null, "Error")));
 			}
 			catch (DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}
 		}
 		
 		[HttpPatch("DeletePricing")]
 		[Authorize(Roles = "Tukang")]
-		public IActionResult DeletPricing(string product)
+		public async Task<IActionResult> DeletPricing(string product)
 		{
 			try
 			{
 				if (product != null)
 				{
-					var res = _priceAppService.Delete(product);
+					var res = await _priceAppService.Delete(product);
 					if (res != null)
 					{
-						return Requests.Response(this, new ApiStatus(200), null, "Success");
+						return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), null, "Success")));
 					}
-					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "Data Not Found")));
 				}
-				return Requests.Response(this, new ApiStatus(400), null, "Error");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(400), null, "Error")));
 			}
 			catch (DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}
 		}
 	}

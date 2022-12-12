@@ -1,4 +1,5 @@
-﻿using FindTheBuilder.Applications.Services.PriceAppServices;
+﻿using FindTheBuilder.Applications.Helper;
+using FindTheBuilder.Applications.Services.PriceAppServices;
 using FindTheBuilder.Applications.Services.PriceAppServices.DTO;
 using FindTheBuilder.Applications.Services.TukangAppServices;
 using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
@@ -41,9 +42,11 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 				Name = "faisal"
 			};
 
+			Task<Tukang> tukangResult = Task.Run(() => (tukang));
+
 			//Act
-			_tukangAppService.Setup(w => w.Create(model)).Returns(tukang);
-			var result = _tukangController.CreateTukang(model) as ObjectResult;
+			_tukangAppService.Setup(w => w.Create(model)).Returns(tukangResult);
+			var result = _tukangController.CreateTukang(model).Result as ObjectResult;
 
 			//Assert
 			Assert.Equal(200, result.StatusCode);
@@ -65,9 +68,11 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 				Name = "malik"
 			};
 
+			Task<Tukang> tukangResult = Task.Run(() => (tukang));
+
 			//Act
-			_tukangAppService.Setup(w => w.Update(updateData)).Returns(tukang);
-			var result = _tukangController.EditTukang(updateData) as ObjectResult;
+			_tukangAppService.Setup(w => w.Update(updateData)).Returns(tukangResult);
+			var result = _tukangController.EditTukang(updateData).Result as ObjectResult;
 
 			//Assert
 			Assert.Equal(200, result.StatusCode);
@@ -86,9 +91,11 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 				TukangId = 1
 			};
 
+			Task<Prices> priceResult = Task.Run(() => (prices));
+
 			//Act
-			_priceAppService.Setup(w => w.Create(price)).Returns(prices);
-			var result = _tukangController.CreatePricing(price) as ObjectResult;
+			_priceAppService.Setup(w => w.Create(price)).Returns(priceResult);
+			var result = _tukangController.CreatePricing(price).Result as ObjectResult;
 
 			//Assert
 			Assert.Equal(200, result.StatusCode);
@@ -108,9 +115,11 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 				TukangId = 1
 			};
 
+			Task<Prices> priceResult = Task.Run(() => (prices));
+
 			//Act
-			_priceAppService.Setup(w => w.Update(update)).Returns(prices);
-			var result = _tukangController.EditPricing(update) as ObjectResult;
+			_priceAppService.Setup(w => w.Update(update)).Returns(priceResult);
+			var result = _tukangController.EditPricing(update).Result as ObjectResult;
 
 			//Assert
 			Assert.Equal(200, result.StatusCode);
@@ -126,9 +135,11 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 				TukangId = 1
 			};
 
+			Task<Prices> priceResult = Task.Run(()=>(prices));
+
 			//Act
-			_priceAppService.Setup( w => w.Delete(prodcutName)).Returns(prices);
-			var result = _tukangController.DeletPricing(prodcutName) as ObjectResult;
+			_priceAppService.Setup(w => w.Delete(prodcutName)).Returns(priceResult);
+			var result = _tukangController.DeletPricing(prodcutName).Result as ObjectResult;
 
 			//Assert
 			Assert.Equal(200, result.StatusCode);

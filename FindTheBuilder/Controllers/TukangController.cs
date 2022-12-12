@@ -75,13 +75,18 @@ namespace FindTheBuilder.Controllers
 
 		// Prices
 		[HttpPost("CreatePricing")]
-		[Authorize(Roles = "Tukang")]
-		public async Task<IActionResult> CreatePricing([FromBody] PriceDTO model)
+		//[Authorize(Roles = "Tukang")]
+		[RequestSizeLimit(5 * 1024 * 1024)]
+		public async Task<IActionResult> CreatePricing([FromForm] PriceDTO model)
 		{
 			try
 			{
 				if (model != null)
 				{
+					if (model.Image != null)
+					{
+						await _priceAppService.SaveImage(model);
+					}
 					var res = await _priceAppService.Create(model);
 					if (res != null)
 					{

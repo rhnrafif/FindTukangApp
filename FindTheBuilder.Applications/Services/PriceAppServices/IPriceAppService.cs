@@ -17,5 +17,6 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 		Task<PagedResult<AllPriceListDTO>> GetAllPrice(PageInfo pageInfo);
 		Task<Prices> GetPriceById(int id);
 		Task<Prices> GetByProduct(string product);
+		Task SaveImage(PriceDTO model);
 	}
 }

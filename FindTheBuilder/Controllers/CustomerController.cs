@@ -37,7 +37,7 @@ namespace FindTheBuilder.Controllers
 
 		// Customer
 		[HttpPost("CreateCustomer")]
-		//[Authorize(Roles = "Customer")]
+		[Authorize(Roles = "Customer")]
 		public async Task<IActionResult> CreateCustomer([FromBody] CustomerDTO model)
 		{
 			try

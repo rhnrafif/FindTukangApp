@@ -91,13 +91,13 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 			{
 				Data = (from price in _context.Prices
 						join tukang in _context.Tukang
-						on price.Id equals tukang.Id
+						on price.TukangId equals tukang.Id
 						join skill in _context.Skills
 						on price.SkillId equals skill.Id
 						where price.IsDeleted == false
 						select new AllPriceListDTO
 						{
-							TukangName = tukang.Name,
+							TukangName = tukang.Name, 
 							TukangSkill = skill.Name,
 							TukangProducts = price.Product,
 							Size = price.Size,
@@ -110,6 +110,19 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 			};
 
 			return await Task.Run(()=>(pagedResult));
+		}
+
+		public async Task SaveImage(PriceDTO model)
+		{
+			var uniqueFileName = FileHelper.GetUniqueFileName(model.Image.FileName);
+			var upload = Path.Combine("user", "post", model.TukangId.ToString());
+			var filePath = Path.Combine(upload, uniqueFileName);
+
+			Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+			await model.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
+			model.ImagePath = filePath;
+			return;
 		}
 	}
 }

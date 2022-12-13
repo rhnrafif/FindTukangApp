@@ -112,7 +112,7 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 
 			Prices prices = new Prices()
 			{
-				TukangId = 1
+				Id = 1
 			};
 
 			Task<Prices> priceResult = Task.Run(() => (prices));

@@ -189,11 +189,11 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 			Task<ICollection<Transactions>> activeTrans = Task.Run(() => (data));
 			
 
-			string name = "faisal";
+			int id = 1;
 
 			//Act
-			_transactionAppService.Setup(w => w.GetTransActiveByName(name)).Returns(activeTrans);
-			var result = _customerController.GetActiveTransactionByName(name).Result as ObjectResult;
+			_transactionAppService.Setup(w => w.GetTransActiveById(id)).Returns(activeTrans);
+			var result = _customerController.GetActiveTransactionById(id).Result as ObjectResult;
 
 			//Assert
 			Assert.Equal(200, result.StatusCode);

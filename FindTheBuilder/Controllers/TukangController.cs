@@ -110,7 +110,7 @@ namespace FindTheBuilder.Controllers
 				if (model != null)
 				{
 					var res = await _priceAppService.Update(model);
-					if (res != null)
+					if (res.Id != 0)
 					{
 						return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), null, "Success")));
 					}

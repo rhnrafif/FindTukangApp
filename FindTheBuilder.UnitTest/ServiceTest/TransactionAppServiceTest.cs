@@ -65,9 +65,9 @@ namespace FindTheBuilder.UnitTest.ServiceTest
         {
             var service = _serviceProvider.GetService<ITransactionAppService>();
 
-            string name = "Agus Ketoprak";
+            int id = 1;
 
-            var result = service.GetTransActiveByName(name);
+            var result = service.GetTransActiveById(id);
             Assert.NotNull(result);
         }
     }

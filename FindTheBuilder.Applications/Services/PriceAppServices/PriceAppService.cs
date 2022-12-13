@@ -49,7 +49,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 
 		public async Task<Prices> GetPriceById(int id)
 		{
-			var price = await _context.Prices.FirstOrDefaultAsync(w => w.Id == id);
+			var price = await _context.Prices.AsNoTracking().FirstOrDefaultAsync(w => w.Id == id);
 			if (price != null)
 			{
 				return await Task.Run(() => (price));
@@ -59,11 +59,13 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 
 		public async Task<Prices> Update(UpdatePriceDTO model)
 		{
-			var getPrice = await GetByProduct(model.Product);
-			if (getPrice.Id != 0)
+			var getPrice = await GetPriceById(model.Id);
+			if (getPrice != null)
 			{
 				var price = _mapper.Map<Prices>(model);
-				getPrice.IsDeleted = false;
+				price.IsDeleted = false;
+				price.Id = getPrice.Id;
+				price.ImagePath = getPrice.ImagePath;
 				_context.Prices.Update(price);
 				await _context.SaveChangesAsync();
 

@@ -126,5 +126,11 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 			model.ImagePath = filePath;
 			return;
 		}
+
+		public async Task<Prices> DownloadImage(int id)
+		{
+			var imageFile = await _context.Prices.FirstOrDefaultAsync(w => w.Id == id);
+			return imageFile;
+		}
 	}
 }

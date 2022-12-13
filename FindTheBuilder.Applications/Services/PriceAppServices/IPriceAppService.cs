@@ -18,5 +18,6 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 		Task<Prices> GetPriceById(int id);
 		Task<Prices> GetByProduct(string product);
 		Task SaveImage(PriceDTO model);
+		Task<Prices> DownloadImage(int id);
 	}
 }

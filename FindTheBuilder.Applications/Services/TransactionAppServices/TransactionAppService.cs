@@ -114,7 +114,7 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 					return await Task.Run(()=>(transaction));
 				}
 
-				var trans = await _contex.Transactions.Where(w => w.Customer.Id == customerData.Id).Where(w => w.PaymentStatus == false).ToListAsync();
+				var trans = await _contex.Transactions.Where(w => w.Id == customerData.Id).Where(w => w.PaymentStatus == false).ToListAsync();
 				if (trans.Count() != 0)
 				{
 					foreach (var d in trans)

@@ -153,11 +153,11 @@ namespace FindTheBuilder.Controllers
 
 		[HttpGet("GetActiveTransaction")]
 		[Authorize(Roles = "Customer")]
-		public async Task<IActionResult> GetActiveTransactionById(int id)
+		public async Task<IActionResult> GetActiveTransactionById(int transactionId)
 		{
 			try
 			{
-				var data = await _transactionAppService.GetTransActiveById(id);
+				var data = await _transactionAppService.GetTransActiveById(transactionId);
 				if (data.Count() == 0)
 				{
 					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "No Transaction")));
@@ -209,6 +209,26 @@ namespace FindTheBuilder.Controllers
 			{
 				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}			 
+		}
+
+		[HttpGet("DownloadProductImage")]
+		[AllowAnonymous]
+		public async Task<IActionResult> DownloadImage(int priceId)
+		{
+			try
+			{
+				var imageData = await _priceAppService.DownloadImage(priceId);
+				if(imageData != null)
+				{
+					var bytes = await System.IO.File.ReadAllBytesAsync(imageData.ImagePath);
+					return File(bytes, "application/octet-stream", Path.GetFileName(imageData.ImagePath));
+				}
+				return await Task.Run(() => (Requests.Response(this, new ApiStatus(404), null, "No Product")));
+			}
+			catch(DbException de)
+			{
+				return await Task.Run(() => (Requests.Response(this, new ApiStatus(404), null, "Product image wasn't found on Server")));
+			}
 		}
 	}
 }

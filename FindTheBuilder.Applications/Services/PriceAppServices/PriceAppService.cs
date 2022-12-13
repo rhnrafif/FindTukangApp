@@ -91,7 +91,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 			{
 				Data = (from price in _context.Prices
 						join tukang in _context.Tukang
-						on price.Id equals tukang.Id
+						on price.TukangId equals tukang.Id
 						join skill in _context.Skills
 						on price.SkillId equals skill.Id
 						where price.IsDeleted == false

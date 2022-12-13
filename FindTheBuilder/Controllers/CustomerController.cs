@@ -153,11 +153,11 @@ namespace FindTheBuilder.Controllers
 
 		[HttpGet("GetActiveTransaction")]
 		[Authorize(Roles = "Customer")]
-		public IActionResult GetActiveTransactionByName(string name)
+		public IActionResult GetActiveTransactionByName(int id)
 		{
 			try
 			{
-				var data = _transactionAppService.GetTransActiveByName(name);
+				var data = _transactionAppService.GetTransActiveById(id);
 				if (data.Count() == 0)
 				{
 					return Requests.Response(this, new ApiStatus(404), null, "No Transaction");

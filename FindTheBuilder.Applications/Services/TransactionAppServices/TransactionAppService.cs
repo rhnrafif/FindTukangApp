@@ -103,13 +103,13 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 			}
 		}
 
-		public ICollection<Transactions> GetTransActiveByName(string name)
+		public ICollection<Transactions> GetTransActiveById(int id)
 		{
 			ICollection<Transactions> transaction = new Collection<Transactions>();
 			try
 			{
-				var customerData = _customerAppService.GetByName(name);
-				if (customerData.Name == null)
+				var customerData = _contex.Transactions.AsNoTracking().FirstOrDefault(w => w.Id == id);
+				if (customerData.Id == null)
 				{
 					return transaction;
 				}

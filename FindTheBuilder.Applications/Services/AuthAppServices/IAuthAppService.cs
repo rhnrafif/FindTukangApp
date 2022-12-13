@@ -9,8 +9,8 @@ namespace FindTheBuilder.Applications.Services.AuthAppServices
 {
 	public interface IAuthAppService
 	{
-		AuthDto Register(AuthDto model);
-		AuthDto Login(AuthLoginDto model);
-		AuthDto AutenticateUser (AuthDto model);
+		Task <AuthDto> Register(AuthDto model);
+		Task<AuthDto> Login(AuthLoginDto model);
+		Task<AuthDto> AutenticateUser (AuthDto model);
 	}
 }

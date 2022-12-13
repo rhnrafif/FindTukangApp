@@ -1,6 +1,7 @@
 ﻿using FindTheBuilder.Applications.Services.TransactionAppServices;
 using FindTheBuilder.Applications.Services.TransactionAppServices.DTO;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,8 @@ namespace FindTheBuilder.UnitTest.ServiceTest
         [Fact]
         public void Update()
         {
-            var service = _serviceProvider.GetService<ITransactionAppService>();
+            //var service = _serviceProvider.GetService<ITransactionAppService>();
+            var service = new Mock<ITransactionAppService>();
 
             UpdateTransactionDTO trans = new UpdateTransactionDTO()
             {
@@ -43,8 +45,7 @@ namespace FindTheBuilder.UnitTest.ServiceTest
 
                 PriceId = 1
             };
-
-            var result = service.Update(trans);
+            var result = service.Setup(w => w.Update(trans));
             Assert.NotNull(result);
         }
 

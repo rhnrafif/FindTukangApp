@@ -11,11 +11,12 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 {
 	public interface IPriceAppService
 	{
-		Prices Create(PriceDTO model);
-		Prices Update(UpdatePriceDTO model);
-		Prices Delete(string product);
-		PagedResult<AllPriceListDTO> GetAllPrice(PageInfo pageInfo);
-		Prices GetPriceById(int id);
-		Prices GetByProduct(string product);
+		Task<Prices> Create(PriceDTO model);
+		Task<Prices> Update(UpdatePriceDTO model);
+		Task<Prices> Delete(string product);
+		Task<PagedResult<AllPriceListDTO>> GetAllPrice(PageInfo pageInfo);
+		Task<Prices> GetPriceById(int id);
+		Task<Prices> GetByProduct(string product);
+		Task SaveImage(PriceDTO model);
 	}
 }

@@ -32,12 +32,12 @@ namespace FindTheBuilder.Controllers
 
 		[HttpPost("login")]
 		[AllowAnonymous]
-		public IActionResult Login([FromBody] AuthLoginDto model)
+		public async Task<IActionResult> Login([FromBody] AuthLoginDto model)
 		{
 			try
 			{				
-				var user = _authAppService.Login(model);
-				var userData = _authAppService.AutenticateUser(user);
+				var user = await _authAppService.Login(model);
+				var userData = await _authAppService.AutenticateUser(user);
 				if(userData.Name != null)
 				{
 					string role = null;
@@ -51,23 +51,23 @@ namespace FindTheBuilder.Controllers
 						role = "Customer";
 					}
 
-					var jwt = GenerateJSONWebToken(userData, role);
+					var jwt = await GenerateJSONWebToken(userData, role);
 					//response = Ok(new { token = jwt });
 
-					return Requests.Response(this, new ApiStatus(200), Ok(new { token = jwt }), "Success");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), Ok(new { token = jwt }), "Success")));
 				}
 
-				return Requests.Response(this, new ApiStatus(404), null, "User Not Found");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "User Not Found")));
 			}
 			catch (DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}
 		}
 
 		[HttpPost("register")]
 		[AllowAnonymous]
-		public IActionResult Register([FromBody] AuthDto model)
+		public async Task<IActionResult> Register([FromBody] AuthDto model)
 		{
 			try
 			{
@@ -75,13 +75,13 @@ namespace FindTheBuilder.Controllers
 				switch (model.Role)
 				{
 					case 1:
-						userData = _authAppService.Register(model);
+						userData = await _authAppService.Register(model);
 						break;
 					case 2:
-						userData = _authAppService.Register(model);
+						userData = await _authAppService.Register(model);
 						break;
 					default:
-						return Requests.Response(this, new ApiStatus(400), null, "Input Not Valid");
+						return await Task.Run(()=>(Requests.Response(this, new ApiStatus(400), null, "Input Not Valid")));
 						break;
 				}
 
@@ -98,21 +98,21 @@ namespace FindTheBuilder.Controllers
 						role = "Customer";
 					}
 
-					var jwt = GenerateJSONWebToken(userData, role);
-					return Requests.Response(this, new ApiStatus(200), Ok(new { token = jwt }), "Success");
+					var jwt = await GenerateJSONWebToken(userData, role);
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), Ok(new { token = jwt }), "Success")));
 				}
 
-				return Requests.Response(this, new ApiStatus(400), null, "Input Error");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(400), null, "Input Error")));
 			}
 			catch  (DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}
 		}
 
 
 
-		private string GenerateJSONWebToken(AuthDto model, string role)
+		private async Task<string> GenerateJSONWebToken(AuthDto model, string role)
 		{
 			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])); //jwt key mengarah ke config appsettings
 			var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -127,7 +127,7 @@ namespace FindTheBuilder.Controllers
 						signingCredentials: credentials
 						) ;
 			
-			return new JwtSecurityTokenHandler().WriteToken(token);
+			return await Task.Run(()=>(new JwtSecurityTokenHandler().WriteToken(token)));
 		}
 
 	}

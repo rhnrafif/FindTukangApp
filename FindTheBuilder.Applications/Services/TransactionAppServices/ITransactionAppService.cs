@@ -10,9 +10,9 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 {
 	public interface ITransactionAppService
 	{
-		Transactions Create(TransactionDTO model);
-		Transactions Update(UpdateTransactionDTO model);
-		Transactions UpdatePayment(int transId);
-		ICollection<Transactions> GetTransActiveById(int id);
+		Task<Transactions> Create(TransactionDTO model);
+		Task<Transactions> Update(UpdateTransactionDTO model);
+		Task<Transactions> UpdatePayment(int transId);
+		Task<ICollection<Transactions>> GetTransActiveById(int id);
 	}
 }

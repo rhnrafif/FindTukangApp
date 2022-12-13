@@ -10,9 +10,9 @@ namespace FindTheBuilder.Applications.Services.CustomerAppServices
 {
 	public interface ICustomerAppService
 	{
-		bool Create(CustomerDTO model);
-		bool Update(UpdateCustomerDTO model);
-		Customers GetByName (string name);
-		Customers GetById(int id);
+		Task<bool> Create(CustomerDTO model);
+		Task<bool> Update(UpdateCustomerDTO model);
+		Task<Customers> GetByName (string name);
+		Task<Customers> GetById(int id);
 	}
 }

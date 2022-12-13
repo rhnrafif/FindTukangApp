@@ -38,176 +38,176 @@ namespace FindTheBuilder.Controllers
 		// Customer
 		[HttpPost("CreateCustomer")]
 		[Authorize(Roles = "Customer")]
-		public IActionResult CreateCustomer([FromBody] CustomerDTO model)
+		public async Task<IActionResult> CreateCustomer([FromBody] CustomerDTO model)
 		{
 			try
 			{
 				if(model.Name != "")
 				{
-					var isAdded = _customerAppService.Create(model);
+					var isAdded = await _customerAppService.Create(model);
 					if (isAdded)
 					{
-						return Requests.Response(this, new ApiStatus(200), null, "Success");
+						return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), null, "Success")));
 					}
-					return Requests.Response(this, new ApiStatus(500), null, "Error");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, "Error")));
 				}
-				return Requests.Response(this, new ApiStatus(400), null, "Error");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(400), null, "Error")));
 			}
 			catch(DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}
 			
 		}
 		
 		[HttpPatch("UpdateCustomer")]
 		[Authorize(Roles = "Customer")]
-		public IActionResult UpdateCustomer([FromBody] UpdateCustomerDTO model)
+		public async Task<IActionResult> UpdateCustomer([FromBody] UpdateCustomerDTO model)
 		{
 			try
 			{
-				if (model.Name != null)
+				if (model.Name != "")
 				{
-					var res = _customerAppService.Update(model);
+					var res = await _customerAppService.Update(model);
 					if(res)
 					{
-						return Requests.Response(this, new ApiStatus(200), null, "Success");
+						return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), null, "Success")));
 					}
-					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "Data Not Found")));
 				}
-				return Requests.Response(this, new ApiStatus(400), null, "Error");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(400), null, "Error")));
 			}
 			catch (DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}
 		}
 
 		// Transaction
 		[HttpPost("CreateTransaction")]
 		[Authorize(Roles = "Customer")]
-		public IActionResult CreateTransaction([FromBody] TransactionDTO model)
+		public async Task<IActionResult> CreateTransaction([FromBody] TransactionDTO model)
 		{
 			try
 			{
 				if (model != null)
 				{
-					var res = _transactionAppService.Create(model);
+					var res = await _transactionAppService.Create(model);
 					if(res.Id != 0)
 					{
-						return Requests.Response(this, new ApiStatus(200), null, "Success");
+						return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), null, "Success")));
 					}
-					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "Data Not Found")));
 				}
-				return Requests.Response(this, new ApiStatus(400), null, "Error");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(400), null, "Error")));
 			}
 			catch (DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}
 		}
 
 		[HttpPatch("UpdateTransaction")]
 		[Authorize(Roles = "Customer")]
-		public IActionResult UpdateTransaction([FromBody] UpdateTransactionDTO model)
+		public async Task<IActionResult> UpdateTransaction([FromBody] UpdateTransactionDTO model)
 		{
 			try
 			{
 				if (model != null)
 				{
-					var res = _transactionAppService.Update(model);
+					var res = await _transactionAppService.Update(model);
 					if (res != null)
 					{
-						return Requests.Response(this, new ApiStatus(200), null, "Success");
+						return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), null, "Success")));
 					}
-					return Requests.Response(this, new ApiStatus(404), null, "Data Not Found");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "Data Not Found")));
 				}
-				return Requests.Response(this, new ApiStatus(400), null, "Error");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(400), null, "Error")));
 			}
 			catch (DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}
 		}
 
 		// Transaction Detail
 		[HttpGet("GetAllTransactionDetails")]
 		[Authorize(Roles = "Customer")]
-		public IActionResult GetAllTransaction([FromQuery] PageInfo pageInfo)
+		public async Task<IActionResult> GetAllTransaction([FromQuery] PageInfo pageInfo)
 		{
 			try
 			{
-				var data = _transactionDetailAppService.GetAllTransactions(pageInfo);
+				var data = await _transactionDetailAppService.GetAllTransactions(pageInfo);
 				if(data.Data.Count() == 0)
 				{
-					return Requests.Response(this, new ApiStatus(404), null, "No Transaction");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "No Transaction")));
 				}
-				return Requests.Response(this, new ApiStatus(200), data, "Success");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), data, "Success")));
 			}
 			catch(DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}
 		}
 
 
 		[HttpGet("GetActiveTransaction")]
 		[Authorize(Roles = "Customer")]
-		public IActionResult GetActiveTransactionByName(int id)
+		public async Task<IActionResult> GetActiveTransactionById(int id)
 		{
 			try
 			{
-				var data = _transactionAppService.GetTransActiveById(id);
+				var data = await _transactionAppService.GetTransActiveById(id);
 				if (data.Count() == 0)
 				{
-					return Requests.Response(this, new ApiStatus(404), null, "No Transaction");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "No Transaction")));
 				}
-				return Requests.Response(this, new ApiStatus(200), data, "Success");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), data, "Success")));
 			}
 			catch (DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}
 		}
 
 		//TransactionDetail
 		[HttpPost("create-detail-transaction")]
 		[Authorize(Roles = "Customer")]
-		public IActionResult CreateTransDetail([FromBody] CreateTransactionDetailDTO model)
+		public async Task<IActionResult> CreateTransDetail([FromBody] CreateTransactionDetailDTO model)
 		{
 			try
 			{
-				var data = _transactionDetailAppService.CreateTransactionDetail(model);
+				var data = await _transactionDetailAppService.CreateTransactionDetail(model);
 				if (data.Id != 0)
 				{
-					return Requests.Response(this, new ApiStatus(200), data, "Success");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), data, "Success")));
 				}
 
-				return Requests.Response(this, new ApiStatus(400), data, "Error");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(400), data, "Error")));
 			}
 			catch (DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}
 		}
 
 		// Prices
 		[HttpGet("GetAllPrice")]
 		[AllowAnonymous]
-		public IActionResult GetAllPrice([FromQuery] PageInfo pageInfo)
+		public async Task<IActionResult> GetAllPrice([FromQuery] PageInfo pageInfo)
 		{
 			try
 			{
-				var data = _priceAppService.GetAllPrice(pageInfo);
+				var data = await _priceAppService.GetAllPrice(pageInfo);
 				if (data.Total == 0)
 				{
-					return Requests.Response(this, new ApiStatus(404), null, "No Price List");
+					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "No Price List")));
 				}
-				return Requests.Response(this, new ApiStatus(200), data, "Success");
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), data, "Success")));
 			}
 			catch (DbException de)
 			{
-				return Requests.Response(this, new ApiStatus(500), null, de.Message);
+				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
 			}			 
 		}
 	}

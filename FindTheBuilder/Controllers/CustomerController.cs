@@ -153,11 +153,11 @@ namespace FindTheBuilder.Controllers
 
 		[HttpGet("GetActiveTransaction")]
 		[Authorize(Roles = "Customer")]
-		public async Task<IActionResult> GetActiveTransactionByName(string name)
+		public async Task<IActionResult> GetActiveTransactionById(int id)
 		{
 			try
 			{
-				var data = await _transactionAppService.GetTransActiveByName(name);
+				var data = await _transactionAppService.GetTransActiveById(id);
 				if (data.Count() == 0)
 				{
 					return await Task.Run(()=>(Requests.Response(this, new ApiStatus(404), null, "No Transaction")));

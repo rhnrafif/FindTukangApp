@@ -103,13 +103,13 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 			}
 		}
 
-		public async Task<ICollection<Transactions>> GetTransActiveByName(string name)
+		public async Task<ICollection<Transactions>> GetTransActiveById(int id)
 		{
 			ICollection<Transactions> transaction = new Collection<Transactions>();
 			try
 			{
-				var customerData = await _customerAppService.GetByName(name);
-				if (customerData.Name == null)
+				var customerData = await _contex.Transactions.AsNoTracking().FirstOrDefaultAsync(w => w.Id == id);
+				if (customerData.Id == 0)
 				{
 					return await Task.Run(()=>(transaction));
 				}

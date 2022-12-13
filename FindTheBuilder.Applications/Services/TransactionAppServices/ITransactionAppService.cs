@@ -13,6 +13,6 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 		Task<Transactions> Create(TransactionDTO model);
 		Task<Transactions> Update(UpdateTransactionDTO model);
 		Task<Transactions> UpdatePayment(int transId);
-		Task<ICollection<Transactions>> GetTransActiveByName(string name);
+		Task<ICollection<Transactions>> GetTransActiveById(int id);
 	}
 }

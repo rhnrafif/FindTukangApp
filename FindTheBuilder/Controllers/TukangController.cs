@@ -13,7 +13,6 @@ namespace FindTheBuilder.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	//[Authorize(Roles ="Tukang")]
 	public class TukangController : ControllerBase
 	{
 		private readonly ITukangAppService _tukangAppService;

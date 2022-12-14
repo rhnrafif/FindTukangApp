@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using FindTheBuilder.Applications.Services.TransactionDetailAppServices.DTO;
+using FindTheBuilder.Applications.Services.SkillAppServices.Dto;
 
 namespace FindTheBuilder.Applications.ConfigProfile
 {
@@ -59,6 +60,10 @@ namespace FindTheBuilder.Applications.ConfigProfile
 			//Auth
 			CreateMap<Auth, AuthDto>();
 			CreateMap<AuthDto, Auth>();
+
+			//Skill
+			CreateMap<Skills, SkillDto>();
+			CreateMap<SkillDto, Skills>();
 
 		}
 	}

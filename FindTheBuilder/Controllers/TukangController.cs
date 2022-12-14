@@ -1,6 +1,7 @@
 ﻿using FindTheBuilder.Applications.Helper;
 using FindTheBuilder.Applications.Services.PriceAppServices;
 using FindTheBuilder.Applications.Services.PriceAppServices.DTO;
+using FindTheBuilder.Applications.Services.SkillAppServices;
 using FindTheBuilder.Applications.Services.TukangAppServices;
 using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using FindTheBuilder.Databases.Models;
@@ -17,12 +18,14 @@ namespace FindTheBuilder.Controllers
 	{
 		private readonly ITukangAppService _tukangAppService;
 		private readonly IPriceAppService _priceAppService;
+		private readonly ISkillAppService _skillAppService;
 
 		public TukangController(ITukangAppService tukangAppService, 
-			IPriceAppService priceAppService)
+			IPriceAppService priceAppService, ISkillAppService skillAppService)
 		{
 			_tukangAppService = tukangAppService;
 			_priceAppService = priceAppService;
+			_skillAppService = skillAppService;
 		}
 
 		// Tukang
@@ -58,7 +61,7 @@ namespace FindTheBuilder.Controllers
 				if (model != null)
 				{
 					var res = await _tukangAppService.Update(model);
-					if (res != null)
+					if (res.Id != 0)
 					{
 						return await Task.Run(()=>(Requests.Response(this, new ApiStatus(200), null, "Success")));
 					}
@@ -69,6 +72,25 @@ namespace FindTheBuilder.Controllers
 			catch (DbException de)
 			{
 				return await Task.Run(()=>(Requests.Response(this, new ApiStatus(500), null, de.Message)));
+			}
+		}
+
+		[HttpGet("skill-list")]
+		//[Authorize(Roles = "Tukang")]
+		public async Task<IActionResult> GetAllSkill()
+		{
+			try
+			{
+				var result = await _skillAppService.GetAllSkill();
+				if(result.Count() != 0)
+				{
+					return await Task.Run(() => (Requests.Response(this, new ApiStatus(200), result, "Success")));
+				}
+				return await Task.Run(() => (Requests.Response(this, new ApiStatus(404), result, "Skill Not Found")));
+			}
+			catch (DbException de)
+			{
+				return await Task.Run(() => (Requests.Response(this, new ApiStatus(500), null, de.Message )));
 			}
 		}
 

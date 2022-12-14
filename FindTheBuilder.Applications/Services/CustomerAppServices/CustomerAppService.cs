@@ -51,7 +51,7 @@ namespace FindTheBuilder.Applications.Services.CustomerAppServices
 		{
 			try
 			{
-				var cust = await GetByName(model.Name);
+				var cust = await GetById(model.Id);
 
 				if (cust.Id != 0)
 				{

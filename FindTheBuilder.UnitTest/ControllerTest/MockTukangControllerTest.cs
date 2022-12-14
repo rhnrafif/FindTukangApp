@@ -1,6 +1,7 @@
 ﻿using FindTheBuilder.Applications.Helper;
 using FindTheBuilder.Applications.Services.PriceAppServices;
 using FindTheBuilder.Applications.Services.PriceAppServices.DTO;
+using FindTheBuilder.Applications.Services.SkillAppServices;
 using FindTheBuilder.Applications.Services.TukangAppServices;
 using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using FindTheBuilder.Controllers;
@@ -20,11 +21,13 @@ namespace FindTheBuilder.UnitTest.ControllerTest
 		private TukangController _tukangController;
 		private Mock<ITukangAppService> _tukangAppService;
 		private Mock<IPriceAppService> _priceAppService;
+		private Mock<ISkillAppService> _skillAppService;
 		public MockTukangControllerTest()
 		{
 			_priceAppService= new Mock<IPriceAppService>();
 			_tukangAppService = new Mock<ITukangAppService>();
-			_tukangController = new TukangController(_tukangAppService.Object, _priceAppService.Object);
+			_skillAppService = new Mock<ISkillAppService>();
+			_tukangController = new TukangController(_tukangAppService.Object, _priceAppService.Object, _skillAppService.Object);
 		}
 
 

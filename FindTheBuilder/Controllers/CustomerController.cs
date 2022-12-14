@@ -221,7 +221,7 @@ namespace FindTheBuilder.Controllers
 				if(imageData != null)
 				{
 					var bytes = await System.IO.File.ReadAllBytesAsync(imageData.ImagePath);
-					return File(bytes, "application/octet-stream", Path.GetFileName(imageData.ImagePath));
+					return File(bytes, "image/jpeg", Path.GetFileName(imageData.ImagePath));
 				}
 				return await Task.Run(() => (Requests.Response(this, new ApiStatus(404), null, "No Product")));
 			}

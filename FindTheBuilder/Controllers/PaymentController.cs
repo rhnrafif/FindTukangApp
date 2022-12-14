@@ -24,13 +24,12 @@ namespace FindTheBuilder.Controllers
 		{
 			try
 			{
-				//var trans = _transactionAppService.UpdatePayment(idTrans);
 				var res = await _paymentAppService.Post();
 				if(res == null)
 				{
 					return Requests.Response(this, new ApiStatus(404), res, "Error");
 				}
-				_transactionAppService.UpdatePayment(idTrans);
+				await _transactionAppService.UpdatePayment(idTrans);
 				return Requests.Response(this, new ApiStatus(200), res, "Success");
 			}
 			catch(DbException de)

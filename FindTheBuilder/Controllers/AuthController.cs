@@ -4,6 +4,7 @@ using FindTheBuilder.Applications.Services.AuthAppServices.Dto;
 using FindTheBuilder.Applications.Services.TukangAppServices;
 using FindTheBuilder.Applications.Services.TukangAppServices.DTO;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -31,6 +32,7 @@ namespace FindTheBuilder.Controllers
 		}
 
 		[HttpPost("login")]
+		[EnableCors("AllowAllHeadersPolicy")]
 		[AllowAnonymous]
 		public async Task<IActionResult> Login([FromBody] AuthLoginDto model)
 		{

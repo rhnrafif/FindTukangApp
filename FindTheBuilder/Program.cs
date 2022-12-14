@@ -16,6 +16,20 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+const string AllowAllHeadersPolicy = "AllowAllHeadersPolicy";
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(AllowAllHeadersPolicy,
+		builder =>
+		{
+			builder.WithOrigins("http://localhost:5173", "http://localhost:7229")
+					.AllowAnyMethod()
+				   .AllowAnyHeader();
+		});
+});
+
+
 // DbContext
 var connection = builder.Configuration.GetConnectionString("DBConnection");
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connection));
@@ -98,6 +112,8 @@ builder.Services.AddSwaggerGen(cfg =>
 
 var app = builder.Build();
 
+app.UseCors("AllowAllHeadersPolicy");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -105,7 +121,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 

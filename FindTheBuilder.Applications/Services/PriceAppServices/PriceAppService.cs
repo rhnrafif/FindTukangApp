@@ -97,6 +97,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 						join skill in _context.Skills
 						on price.SkillId equals skill.Id
 						where price.IsDeleted == false
+						where tukang.IsAvailable == true
 						select new AllPriceListDTO
 						{
 							TukangName = tukang.Name, 
@@ -105,7 +106,7 @@ namespace FindTheBuilder.Applications.Services.PriceAppServices
 							Size = price.Size,
 							Price = price.Price
 						})
-						.Skip(pageInfo.Skip)
+						//.Skip(pageInfo.Skip)
 						.Take(pageInfo.PageSize)
 						.OrderBy(w => w.TukangSkill),
 				Total = _context.Prices.Where(w => w.IsDeleted == false).Count()

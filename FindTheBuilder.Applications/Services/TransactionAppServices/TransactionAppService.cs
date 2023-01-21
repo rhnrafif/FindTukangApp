@@ -2,6 +2,7 @@
 using FindTheBuilder.Applications.Services.CustomerAppServices;
 using FindTheBuilder.Applications.Services.PriceAppServices;
 using FindTheBuilder.Applications.Services.TransactionAppServices.DTO;
+using FindTheBuilder.Applications.Services.TukangAppServices;
 using FindTheBuilder.Databases;
 using FindTheBuilder.Databases.Models;
 using Microsoft.EntityFrameworkCore;
@@ -20,13 +21,17 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 		private IMapper _mapper;
 		private readonly ICustomerAppService _customerAppService;
 		private readonly IPriceAppService _priceAppService;
+		private readonly ITukangAppService _tukangAppService;
 
-		public TransactionAppService(AppDbContext contex, IMapper mapper, ICustomerAppService customerAppService, IPriceAppService priceAppService)
+		public TransactionAppService(AppDbContext contex, IMapper mapper, 
+			ICustomerAppService customerAppService, IPriceAppService priceAppService,
+			ITukangAppService tukangAppService)
 		{
 			_contex = contex;
 			_mapper = mapper;
 			_customerAppService = customerAppService;
 			_priceAppService = priceAppService;
+			_tukangAppService = tukangAppService;
 		}
 
 		public async Task<Transactions> Create(TransactionDTO model)
@@ -42,15 +47,26 @@ namespace FindTheBuilder.Applications.Services.TransactionAppServices
 
 				if(custData.Id != 0 && trans.PriceId != 0)
 				{
-					dataTrans.CustomerId = custData.Id;
-					dataTrans.PriceId = trans.PriceId;
-					dataTrans.TransactionDate = transDate;
-					dataTrans.PaymentStatus = paymentStat;
+					var tukangPrice = await _priceAppService.GetPriceById(trans.PriceId);
+					var dataTukang = await _tukangAppService.GetById(tukangPrice.TukangId);
+					if(dataTukang.Id != 0)
+					{
+						var isSucces = await _tukangAppService.UpdateAvailbility(dataTukang.Id);
+						if(isSucces)
+						{
+							dataTrans.CustomerId = custData.Id;
+							dataTrans.PriceId = trans.PriceId;
+							dataTrans.TransactionDate = transDate;
+							dataTrans.PaymentStatus = paymentStat;
 
-					await _contex.Transactions.AddAsync(dataTrans);
-					await _contex.SaveChangesAsync();
+							await _contex.Transactions.AddAsync(dataTrans);
+							await _contex.SaveChangesAsync();
 
-					return await Task.Run(()=>(dataTrans));
+							return await Task.Run(() => (dataTrans));
+						}
+						return await Task.Run(() => (dataTrans));
+					}
+					return await Task.Run(() => (dataTrans));
 				}
 				return await Task.Run(()=>(dataTrans));
 			}

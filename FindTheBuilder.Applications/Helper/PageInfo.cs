@@ -10,7 +10,7 @@ namespace FindTheBuilder.Applications.Helper
 	{
 		public int Page { get; set; }
 		public int PageSize { get; set; }
-		public int Skip
+		private int Skip
 		{
 			get
 			{

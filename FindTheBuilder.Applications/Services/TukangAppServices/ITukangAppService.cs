@@ -12,5 +12,7 @@ namespace FindTheBuilder.Applications.Services.TukangAppServices
 	{
 		Task<Tukang> Create(TukangDTO model);
 		Task<Tukang> Update(UpdateTukangDTO model);
+		Task<bool> UpdateAvailbility(int tukangId);
+		Task<Tukang> GetById(int id);
 	}
 }

@@ -30,7 +30,7 @@ namespace FindTheBuilder.Controllers
 
 		// Tukang
 		[HttpPost("CreateTukang")]
-		[Authorize(Roles = "Tukang")]
+		//[Authorize(Roles = "Tukang")]
 		public async Task<IActionResult> CreateTukang([FromBody] TukangDTO model)
 		{
 			try
@@ -53,7 +53,7 @@ namespace FindTheBuilder.Controllers
 		}
 		
 		[HttpPatch("EditTukang")]
-		[Authorize(Roles = "Tukang")]
+		//[Authorize(Roles = "Tukang")]
 		public async Task<IActionResult> EditTukang([FromBody] UpdateTukangDTO model)		
 		{
 			try
@@ -124,7 +124,7 @@ namespace FindTheBuilder.Controllers
 		}
 
 		[HttpPatch("EditPricing")]
-		[Authorize(Roles = "Tukang")]
+		//[Authorize(Roles = "Tukang")]
 		public async Task<IActionResult> EditPricing([FromBody] UpdatePriceDTO model)
 		{
 			try
@@ -147,7 +147,7 @@ namespace FindTheBuilder.Controllers
 		}
 		
 		[HttpPatch("DeletePricing")]
-		[Authorize(Roles = "Tukang")]
+		//[Authorize(Roles = "Tukang")]
 		public async Task<IActionResult> DeletPricing(string product)
 		{
 			try

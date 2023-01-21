@@ -9,6 +9,7 @@ using FindTheBuilder.Applications.Services.TransactionDetailAppServices;
 using FindTheBuilder.Applications.Services.TransactionDetailAppServices.DTO;
 using FindTheBuilder.Databases.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.Common;
 
@@ -37,7 +38,7 @@ namespace FindTheBuilder.Controllers
 
 		// Customer
 		[HttpPost("CreateCustomer")]
-		[Authorize(Roles = "Customer")]
+		//[Authorize(Roles = "Customer")]
 		public async Task<IActionResult> CreateCustomer([FromBody] CustomerDTO model)
 		{
 			try
@@ -61,7 +62,7 @@ namespace FindTheBuilder.Controllers
 		}
 		
 		[HttpPatch("UpdateCustomer")]
-		[Authorize(Roles = "Customer")]
+		//[Authorize(Roles = "Customer")]
 		public async Task<IActionResult> UpdateCustomer([FromBody] UpdateCustomerDTO model)
 		{
 			try
@@ -85,7 +86,7 @@ namespace FindTheBuilder.Controllers
 
 		// Transaction
 		[HttpPost("CreateTransaction")]
-		[Authorize(Roles = "Customer")]
+		//[Authorize(Roles = "Customer")]
 		public async Task<IActionResult> CreateTransaction([FromBody] TransactionDTO model)
 		{
 			try
@@ -108,7 +109,7 @@ namespace FindTheBuilder.Controllers
 		}
 
 		[HttpPatch("UpdateTransaction")]
-		[Authorize(Roles = "Customer")]
+		//[Authorize(Roles = "Customer")]
 		public async Task<IActionResult> UpdateTransaction([FromBody] UpdateTransactionDTO model)
 		{
 			try
@@ -132,7 +133,7 @@ namespace FindTheBuilder.Controllers
 
 		// Transaction Detail
 		[HttpGet("GetAllTransactionDetails")]
-		[Authorize(Roles = "Customer")]
+		//[Authorize(Roles = "Customer")]
 		public async Task<IActionResult> GetAllTransaction([FromQuery] PageInfo pageInfo)
 		{
 			try
@@ -152,7 +153,7 @@ namespace FindTheBuilder.Controllers
 
 
 		[HttpGet("GetActiveTransaction")]
-		[Authorize(Roles = "Customer")]
+		//[Authorize(Roles = "Customer")]
 		public async Task<IActionResult> GetActiveTransactionById(int transactionId)
 		{
 			try
@@ -172,7 +173,7 @@ namespace FindTheBuilder.Controllers
 
 		//TransactionDetail
 		[HttpPost("create-detail-transaction")]
-		[Authorize(Roles = "Customer")]
+		//[Authorize(Roles = "Customer")]
 		public async Task<IActionResult> CreateTransDetail([FromBody] CreateTransactionDetailDTO model)
 		{
 			try
@@ -193,6 +194,7 @@ namespace FindTheBuilder.Controllers
 
 		// Prices
 		[HttpGet("GetAllPrice")]
+		[EnableCors("AllowAllHeadersPolicy")]
 		[AllowAnonymous]
 		public async Task<IActionResult> GetAllPrice([FromQuery] PageInfo pageInfo)
 		{

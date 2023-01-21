@@ -84,7 +84,7 @@ namespace FindTheBuilder.Controllers
 						break;
 					default:
 						return await Task.Run(()=>(Requests.Response(this, new ApiStatus(400), null, "Input Not Valid")));
-						break;
+						
 				}
 
 				if(userData != null)
